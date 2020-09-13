@@ -1,0 +1,38 @@
+2019-03-05  hidega  hidega@caesar.elte.hu
+
+* version 1.0.5 : The first working prototype is ready for tests.
+
+
+2019-03-05  hidega  hidega@caesar.elte.hu
+
+* version 1.0.4 : Grunt is abandoned in favor a custom building task runner.
+
+
+2018-12-25  hidega  hidega@caesar.elte.hu
+
+* version 1.0.3 : Completely new build with minification using Grunt
+
+
+2018-12-12  hidega  hidega@caesar.elte.hu
+
+* version 1.0.2 - The program is entirely rewritten.
+
+
+2018-12-12  hidega  hidega@caesar.elte.hu
+
+* Using commons' mongoDB support utilities.
+  Added database failure handling functions.
+
+
+2018-11-02  hidega  hidega@caesar.elte.hu
+
+* version 1.0.1. The first working server. 
+
+
+2018-07-26  hidega  hidega@caesar.elte.hu
+
+* development started
+
+
+
+

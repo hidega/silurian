@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    
+    <title>IT-116 login page</title>
+    
+    <link rel="stylesheet" href="/web/css/styles.css"/>
+    <link rel="stylesheet" href="/web/css/fas-all.min.css"/>
+    <link rel="stylesheet" href="/web/css/bootstrap.min.css"/>
+    <link rel="icon" type="image/png" href="/web/img/favicon-32x32.png" sizes="32x32"> 
+    
+    <script src="/web/js/jquery-3.3.1.min.js"></script> 
+    <script src="/web/js/bootstrap.bundle.min.js"></script>        
+    <script src="/web/js/login.js"></script>        
+  </head>
+ 
+  <body>
+    <div id="it116-pageroot">
+      <div id="it116-loginoverlay" class="d-none">
+        <div id="it116-loginspinnerbox" class="spinner-border text-dark"></div>
+      </div>   
+              
+      <div id="it116-loginform" class="it116-textselectiondisabled border border-primary">
+        <form>
+          <h4>Login to site</h4>
+          
+          <br/>
+          
+          <div class="form-group">
+            <label for="it116-username">Username</label>
+            <input type="text" 
+                class="form-control" 
+                id="it116-username" 
+                name="username"
+                placeholder="Enter username"/>
+          </div>
+          
+          <div class="form-group">
+            <label for="it116-password">Password</label>
+            <input type="password" 
+                class="form-control" 
+                id="it116-password" 
+                name="password" 
+                placeholder="Password"/>
+          </div>
+          
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>        
+      </div>
+      
+      <div id="it116-messagebox" class="d-none">
+        <div class="alert alert-warning">
+          <span class="it116-iconred fa fa-exclamation-circle"></span>  
+          <span class="ml-2">Invalid username and/or password</span>
+        </div>     
+      </div>
+    </div>
+  </body>
+</html>

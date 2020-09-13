@@ -1,0 +1,28 @@
+[
+  {
+    "_id": 1,
+    "name": "superuser", 
+    "groups": ["SUPER"], 
+    "password": "p1",
+    "data" : {
+      "description": "This is the superuser"
+    }
+  }, {
+    "_id": 2,
+    "name": "adminOne", 
+    "groups": ["ADMIN"], 
+    "password": "p2",
+    "data" : {}     
+  }, {
+    "_id": 3,
+    "name": "adminTwo", 
+    "groups": ["ADMIN", "COMMON"], 
+    "password": "p3",
+    "data" : {}     
+  }, {
+    "_id": 4,
+    "name": "tester", 
+    "groups": ["ADMIN", "TESTER"], 
+    "password": "p4" 
+  }
+]

@@ -1,0 +1,27 @@
+2020-01-05  hidega  hidega@caesar.elte.hu
+
+* version 1.0.3 : REST endpoint and client was added.
+
+
+2019-06-05  hidega  hidega@caesar.elte.hu
+
+* version 1.0.2 : The project is renamed to time-service. Time server and client is under development.
+
+
+2019-05-05  hidega  hidega@caesar.elte.hu
+
+* @hapi/sntp  is used.
+
+
+2019-04-12  hidega  hidega@caesar.elte.hu
+
+* version 1.0.1 is the first working release.
+
+
+2019-03-07  hidega  hidega@caesar.elte.hu
+
+* development started
+
+
+
+

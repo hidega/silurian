@@ -1,0 +1,27 @@
+2020-01-07  hidega  hidega@caesar.elte.hu
+
+* version 1.0.4 : The code is restructured, REST endpoint and client is added.
+
+
+2019-03-05  hidega  hidega@caesar.elte.hu
+
+* version 1.0.3 : Grunt is abandoned in favor a custom building task runner.
+
+
+2018-12-25  hidega  hidega@caesar.elte.hu
+
+* version 1.0.2 : Completely new build with minification using Grunt
+
+
+2018-11-02  hidega  hidega@caesar.elte.hu
+
+* version 1.0.1. The first working code is able to send mails.
+
+
+2018-08-12  hidega  hidega@caesar.elte.hu
+
+* Development started
+ 
+  
+
+

@@ -1,0 +1,80 @@
+IT-116 - Integration test suite
+
+-------------------------------------------------------------------------------
+
+* Overview
+
+The main objective is to test the web service and REST related functionalities 
+of the silurian microservice primitives.
+
+The pacakges run directly on the server, no containers are involved.  The test 
+suite is a web application where users are tracked and transient values can be 
+set in the hashtable for each user.  The application has a web browser 
+interface.  The web client is built using JQuery, Bootstrap 4, FAS.  The web 
+app is a single NodeJS process.
+
+A package may offer a REST service when 
+ - it maintains a persistent state, 
+ - it attempts to encapsulate remote connectivity details,
+ - it is used by remote clients or foreign architectures. 
+
+A package may be used as a software library when 
+ - its state is transient,
+ - it is availaible only for NodeJs components,
+ - performance issues are to be considered. 
+
+The following packages are involved:   
+
+  @permian/proxy : HTTPS features
+  Listens for secure connections on public port 8443.
+
+  @silurian/helloworld : all
+  PFBM package, listens for connections on public port 8080 or available 
+  through the proxy.
+
+  @silurian/ticketman : simple
+  Used as a software library.
+
+  @silurian/filesrv : all
+  Runs as restendpoint, listens on local port 9222.
+
+  @silurian/memht : all
+  Runs as restendpoint, listens on local port 2330.
+
+  @silurian/time-service : all
+  Runs as restendpoint, listens on local port 6031.
+
+  @silurian/userdb : static
+  Used as a software library.
+
+
+-------------------------------------------------------------------------------
+
+* Redirections
+
+Proxy:
+
+/hello  -->  http://<publicaddress>:8080/
+/rest   -->  http://<containerlocalnet>:3981/
+/web    -->  http://<containerlocalnet>:9222/web/file-service
+/login  -->  http://<containerlocalnet>:9222/web/file-service/login.html
+/       -->  http://<containerlocalnet>:9222/web/file-service/login.html
+
+
+-------------------------------------------------------------------------------
+
+* Available endpoints on the Servlet, listening on port 3981 :
+
+  html getMainPage(ticket)                 GET      get-main-page
+  json obtainTicket(username, password)    GET      obtain-ticket
+  json updateTicket(ticket)                GET      update-ticket
+  json findKvp(ticket, prefix, fragment)   GET      find-kvp
+  json upsertKvp(ticket, key, value)       PUT      upsert-kvp
+  json deleteKvp(ticket, key)              DELETE   delete-kvp
+
+
+-------------------------------------------------------------------------------
+
+* Helathcheck
+
+Manually run healthcheck.js and monitor the results.

@@ -1,0 +1,3 @@
+MYSQL
+mwuser pwd: kghBol3786vl1
+root pwd: Hkgh678gjhg8yx

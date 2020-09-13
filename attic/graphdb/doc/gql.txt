@@ -1,0 +1,111 @@
+Graph Query Language
+-------------------
+
+
+--- lexical grammar ------------------------------------------
+
+__STRING__ ::== < 7 bit ASCII char sequence with \ escape>
+__QUOTED_STRING__ ::== "< 7 bit ASCII char sequence with \ escape>"
+__INTEGER__ ::== \-?[0-9]+ 
+__NUMBER__ ::== __INTEGER__(\.[0-9]+)* 
+__WHITESPACE__ ::== [ \t\r\n]+
+__JSPATH__ ::== [a-zA-Z0-9._-$\[\]]+
+
+
+--- syntactic grammar ------------------------------------------
+
+WS ::== __WHITESPACE__
+INT ::== __INTEGER__
+NUMBER ::== __NUMBER__
+STRING ::== __STRING__
+REGEXP ::== __STRING__
+QUOTE ::== __QUOTE__
+JSPATH ::== __JSPATH__
+
+PERIOD ::== .
+COMMA ::== ,
+PAREN_OPEN ::== (
+PAREN_CLOSE ::== )
+
+UNION ::== union
+SELECT ::== select
+NODE ::== node
+WHERE ::== WHERE
+LIKE ::== like
+UNLIKE ::== unlike
+IS ::== is
+NOT ::== not
+TRAVERSE ::== traverse
+DEPTH ::== depth
+LIMIT ::== limit
+DATA ::== data
+LABEL ::== label
+ID ::== id
+DOMAIN ::== domain
+EDGE ::== edge
+AND ::== and
+OR ::== or
+XOR ::== xor
+IN ::== in
+EDGES ::== edges
+NODE_FROM ::== nodeFrom
+NODE_TO ::== nodeTo
+
+QUOTED_REGEXP ::== <QUOTE> <REGEXP> <QUOTED>
+
+QUOTED_STRING ::== <QUOTE> <STRING> <QUOTED>
+
+STRING_OR_NUMBER ::== <STRING> || <NUMBER> 
+
+CS_LIST ::== ( STRING_OR_NUMBER <WS>+ <COMMA> <WS>+ )* STRING_OR_NUMBER
+
+ITEM_LIST ::== <PAREN_OPEN> <WS>+ <CS_LIST> <WS>+ <PAREN_CLOSE>
+
+/* STR_FUNCTION_CALL ::== */
+
+/* REL_PREDAICATE ::== */
+
+LOGICAL_OPERATOR ::== <AND || <OR> || <XOR> || <AND> <WS>+ <NOT> || <OR> <WS>+ <NOT> 
+
+NODE_ID_PREDICATE ::== <ID> <WS>+ (
+                         ( <LIKE> || <UNLIKE> ) <WS>+ <QUOTED_REGEXP> ||
+                         <IS> <WS>+ (<NOT> <WS>+)? <IN> <WS>+ <ITEM_LIST>                       
+                       )
+                       
+NODE_PREDICATE ::== <NODE_ID_PREDICATE> || 
+                    <NODE_DOMAIN_PREDICATE> || 
+                    <NODE_LABEL_PREDICATE> || 
+                    <NODE_DOMAIN_DATA_PREDICATE> || 
+                    <NODE_EDGES_PREDICATE> || 
+                    /* <STR_FUNCTION_CALL> || */
+                    /* <REL_PREDAICATE> || */
+                    ( <NODE_PREDICATE> <WS>+ <LOGICAL_OPERATOR> <WS>+ <NODE_PREDICATE> )+ ||
+                    <PAREN_OPEN> <WS>+ <NODE_PREDICATE> <WS>+ <PAREN_CLOSE>
+
+NODE_WHERE_CLAUSE ::== ( <NODE_PREDICATE> <WS>+ <LOGICAL_OPERATOR> <WS>+ )* <NODE_PREDICATE>
+
+LIMIT_NR_CLAUSE ::== <LIMIT> <WS>+ <INT>
+
+LIMIT_DEPTH_CLAUSE ::== <LIMIT> <WS>+ <DEPTH> <WS>+ <INT>
+
+LIMIT_CLAUSE ::== <LIMIT_NR_CLAUSE> || <LIMIT_DEPTH_CLAUSE> || 
+                  <LIMIT_NR_CLAUSE> <WS+> <LIMIT_DEPTH_CLAUSE>  || 
+                  <LIMIT_DEPTH_CLAUSE> <WS+> <LIMIT_NR_CLAUSE> 
+
+SELECT_NODE ::== <SELECT> <WS>+ <NODE> <WS>+ <WHERE> <NODE_WHERE_CLAUSE> <WS>+ <LIMIT_CLAUSE>
+
+SELECT_STMT ::== <SELECT_NODE> || <SELECT_NODE_TRAVERSE> || <SELECT_EDGE> || <SELECT_EDGE_TRAVERSE>
+
+QUERY ::= <WS>* ( <SELECT_STMT> <WS>+ <UNION> <WS>+ )* <SELECT_STMT> <WS>*
+
+
+--- semantic parsing ------------------------------------------------------
+
+
+
+--- query builder ---------------------------------------------------------
+
+building
+
+
+

@@ -1,0 +1,14 @@
+use admin
+
+db.createUser({ 
+  user: "superuser", 
+  pwd: "superuser",  
+  roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"] }); 
+
+db.grantRolesToUser("superuser", [{ role: "root", db: "admin" }]);
+
+mongodb://[username:password@]host1[:port1][,...hostN[:portN]][/[database][?options]]
+
+mongodb://superuser:superuser@localhost:27017
+
+.\mongo.exe  -u superuser -p superuser --authenticationDatabase admin

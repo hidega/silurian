@@ -1,0 +1,82 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: darkgrey;
+  overflow: hidden;
+}
+
+#it116-pageroot {
+  width: 100vw;
+  height: 100vh;
+  background-color: #f8f8fc;
+  overflow: auto;
+}
+
+#it116-mainpanel {
+  padding: 8px;
+}
+
+#it116-statspanel {
+  padding: 8px;
+}
+
+#it116-mainpropertylist {
+  width: calc(100% - 12px);
+  padding: 4px;
+}
+
+#it116-mainsearchmessagebox, #it116-mainaddmessagebox, .it116-mainitemmessagebox {
+  height: 38px !important;
+  padding-bottom: 6px !important;
+  padding-top: 2px !important;
+}
+
+#it116-loginform, #it116-messagebox {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 60px;
+  max-width: 400px;
+  min-width: 200px;
+  padding: 10px 20px 20px 20px;
+}
+
+#it116-loginform { 
+  background-color: white;
+}
+
+.it116-textselectiondisabled {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.it116-iconred {
+  color: firebrick;
+}
+
+#it116-loginoverlay, #it116-mainoverlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background-color: white;
+  opacity: 0.7;
+}
+
+#it116-loginspinnerbox, #it116-mainspinnerbox {
+  margin-left: auto; 
+  margin-right: auto;  
+  display: block; 
+}
+
+#it116-loginspinnerbox {  
+  margin-top: 180px;  
+}
+
+#it116-mainspinnerbox { 
+  margin-top: 50vh;  
+}

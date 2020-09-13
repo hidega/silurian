@@ -1,0 +1,24 @@
+{
+  "name": "@silurian/userdb",
+  "version": "1.0.1",
+  "description": "userdb",
+  "private": true,
+  "dependencies": {
+    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.17.tgz",
+    "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.0.8.tgz",
+    "@silurian/kvps": "https://people.inf.elte.hu/hiaiaat/npm/silurian-kvps-1.0.2.tgz"
+  },
+  "devDependencies": {
+    "@permian/taskrunner": "https://people.inf.elte.hu/hiaiaat/npm/permian-taskrunner-1.0.1.tgz",
+    "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.2.tgz"
+  },
+  "scripts": {
+    "taru": "node -e \"require('@permian/taskrunner')()\""
+  },
+  "license": "Apache-2.0",
+  "files": [
+    "index.js",
+    "dirsum.txt",
+    "lib/**"
+  ]
+}

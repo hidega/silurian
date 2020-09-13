@@ -1,0 +1,13 @@
+inditas a gyokerbol:
+
+.\bin\ftpd.bat
+set JAVA_HOME
+
+.\bin\ftpd.bat res/conf/ftpd-typical.xml
+
+!ls
+binary
+
+a kliensbol
+
+ftp>   open <host> <port>

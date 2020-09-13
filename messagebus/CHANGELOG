@@ -1,0 +1,58 @@
+2020-01-19  hidega  hidega@caesar.elte.hu
+
+* version 1.0.7 : This package was transferred to the Silurian project.
+
+
+2019-05-19  hidega  hidega@caesar.elte.hu
+
+* version 1.0.7 : Batching utilities are added.
+
+
+2019-05-05  hidega  hidega@caesar.elte.hu
+
+* version 1.0.6 : The first working prototype is ready for the tests.
+
+
+2019-03-05  hidega  hidega@caesar.elte.hu
+
+* version 1.0.5 : Grunt is abandoned in favor a custom building task runner.
+  Relieving is abandoned.
+
+
+2019-01-27  hidega  hidega@caesar.elte.hu
+
+* version 1.0.4 : Relieving functionality was introduced.
+
+
+2018-12-25  hidega  hidega@caesar.elte.hu
+
+* version 1.0.3 : Completely new build with minification using Grunt
+
+
+2018-12-12  hidega  hidega@caesar.elte.hu
+
+* version 1.0.2 - Using commons' mongoDB support utilities.
+
+
+2018-11-02  hidega  hidega@caesar.elte.hu
+
+* The development continues.
+
+
+2018-08-14  hidega  hidega@caesar.elte.hu
+
+* buffering was added
+
+
+2018-08-05  hidega  hidega@caesar.elte.hu
+
+* version 1.0.1 - the first working code
+
+
+2018-07-05  hidega  hidega@caesar.elte.hu
+
+* Development was started.
+
+
+
+

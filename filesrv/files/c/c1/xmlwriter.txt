@@ -1,0 +1,142 @@
+'use strict'
+
+function XmlWriter(stream, opts) {
+  const self = this
+
+  const stack = []
+
+  opts || (opts = {})
+  
+  const xmlDeclaration = !!opts.xmlDeclaration ? '<?xml version="1.0" encoding="UTF-8"?>' : ''
+
+  const validateElementName = name => {
+    if(!/[a-zA-Z_][0-9a-zA-Z_\-\:]*/g.test(name)) {
+      throw new Error('invalid element name: ' + name)
+    }
+    return name
+  }
+  
+  const validateAttributeName = name => {
+    if(!/[a-zA-Z_][0-9a-zA-Z_\-\:]*/g.test(name)) {
+      throw new Error('invalid attribute name: ' + name)
+    }
+    return name
+  }
+ 
+  const escapeText = text => {
+    let result = ''
+    for(let i in text) {
+      const nextChar = text[i]
+      if(nextChar==='&') {
+        result += '&amp;'
+      } else if(nextChar==='<') {
+        result += '&lt;'
+      } else if(nextChar==='>') {
+        result += '&gt;'
+      } else if(nextChar==='\'') {
+        result += '&apos;'
+      } else if(nextChar==='"') {
+        result += '&guot;'
+      } else {
+        result += nextChar
+      }
+    }
+    return result
+  }
+
+  const pop = () => stack.length>0 ? stack.pop() : false
+  
+  const peek = () => stack.length>0 ? stack[stack.length-1] : false
+  
+  const push = stack.push
+  
+  let state = false
+  
+  const states = {
+    START: {
+      startTag: elementName => {
+        push(elementName)
+        state = states.IN_ELEMENT
+        return stream.write(`${xmlDeclaration}<${elementName} `)
+      },
+      close: () => {
+        state = states.HALT
+        return stream.write(`${xmlDeclaration}<null/>`)
+      },
+      appendXmlData: xmlData => {
+        state = states.HALT
+        return stream.write(xmlDeclaration + xmlData)
+      }      
+    },
+    IN_ELEMENT: {
+      startTag: elementName => {
+        push(elementName) 
+        return stream.write(`><${elementName} `)
+      },
+      closeTag: () => {
+         state = pop() ? states.IN_TEXT : states.HALT
+         return stream.write('/>')
+      },
+      close: () => {
+        let text = '>'
+        let elementName = pop()
+        while(elementName) {
+          text += `</${elementName}>`
+          elementName = pop()
+        }
+        state = states.HALT
+        return stream.write(text)
+      },     
+      appendAttribute: (name, value) => stream.write(`${name}="${value}" `),
+      appendText: text => {
+        state = states.IN_TEXT 
+        return stream.write(`/>${text}`)
+      },
+      appendXmlData: xmlData => {
+        state = states.IN_TEXT 
+        return stream.write(`/>${xmlData}`)
+      }
+    },
+    IN_TEXT: {
+      startTag: elementName => {
+        push(elementName)
+        state = states.IN_ELEMENT
+        return stream.write(`<${elementName} `)
+      },
+      closeTag: () => {
+        const elementName = pop()
+        state = peek() ? states.IN_TEXT : states.HALT
+        return stream.write(`</${elementName}>`)
+      },
+      close: () => {
+        let text = ''
+        let elementName = pop()
+        while(elementName) {
+          text += `</${elementName}>`
+          elementName = pop()
+        }
+        state = states.HALT
+        return stream.write(text)
+      },  
+      appendText: text => stream.write(text),      
+      appendXmlData: xmlData => stream.write(xmlData)
+    },
+    HALT: {}  
+  }
+  
+  state = states.START
+  
+  self.startTag = elementName => state.startTag(validateElementName(elementName))
+
+  self.closeTag = () => state.closeTag()
+
+  self.close = () => state.close()
+
+  self.appendAttribute = (elementName, value) => state.appendAttribute(validateAttributeName(elementName, escapeText(value)))
+
+  self.appendText = text => state.appendText(escapeText(text))
+
+  self.appendXmlData = xmlData => state.appendXmlData(xmlData)
+}
+
+module.exports = XmlWriter

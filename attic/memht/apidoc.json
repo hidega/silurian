@@ -1,0 +1,43 @@
+{
+  "GET": {
+    "keys-like": {
+      "description": "Fetches all keys from the hashtable that match a prefix.",
+      "uri-parameters": {
+        "keyprefix": "The matcher prefix of the keys"
+      },
+      "response": [{
+        "type": "application/json",
+        "case": "On success",
+        "schema": null,
+        "description": "An array of the matching keys"
+      }, {
+        "type": "application/json",
+        "case": "On failure",
+        "description": "An error message which usually indicates an internal server error."
+      }]
+    },
+    "diagnostics": {
+      "description": "Provides a diagnostics report on the hashtable.",
+      "response": [{
+        "type": "application/json",
+        "case": "On success",
+        "description": "A diagnosics report"
+      }, {
+        "type": "application/json",
+        "case": "On failure",
+        "description": "An error message which usually indicates an internal server error."
+      }]
+    },
+    "get-raw": {},
+    "get-objects": {}, 
+    "has": {}
+  },
+  "PUT": {
+    "put-raw": {},
+    "put-objects": {}
+  },
+  "DELETE": {
+    "remove-like": {},
+    "remove": {}
+  }
+}

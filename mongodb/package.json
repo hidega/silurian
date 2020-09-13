@@ -1,0 +1,26 @@
+{
+  "name": "@silurian/mongodb",
+  "version": "1.0.1",
+  "description": "mongodb",
+  "private": true,
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@permian/taskrunner": "https://people.inf.elte.hu/hiaiaat/npm/permian-taskrunner-1.0.1.tgz",
+    "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.2.tgz"
+  },
+  "scripts": {
+    "taru": "node -e \"require('@permian/taskrunner')()\"",
+    "cmd": "node lib/cmd"
+  },
+  "dependencies": {
+    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.17.tgz",
+    "@permian/mongodbfw": "https://people.inf.elte.hu/hiaiaat/npm/permian-mongodbfw-1.0.5.tgz",
+    "fs-extra": "^7.0.0",
+    "rimraf": "^3.0.0"
+  },
+  "files": [
+    "index.js",
+    "dirsum.txt",
+    "lib/**"
+  ]
+}

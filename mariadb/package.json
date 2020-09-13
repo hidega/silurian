@@ -1,0 +1,22 @@
+{
+  "name": "@silurian/mariadb",
+  "version": "1.0.1",
+  "description": "mariadb",
+  "private": true,
+  "devDependencies": {
+    "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.5.tgz"
+  },
+  "scripts": {
+    "tr": "node ./node_modules/@permian/build-tasks"
+  },
+  "dependencies": {
+    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.18.tgz",
+    "@permian/mariadbfw": "https://people.inf.elte.hu/hiaiaat/npm/permian-mariadbfw-1.0.5.tgz",
+    "mariadb": "^2.4.2"
+  },
+  "files": [
+    "index.js",
+    "dirsum.txt",
+    "lib/**"
+  ]
+}

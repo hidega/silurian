@@ -1,0 +1,27 @@
+{ 
+  "userdb": {
+    "bsonType": "object",
+    "additionalProperties": false,
+    "properties": {
+      "_id" : {
+        "bsonType": "objectId" 
+      },
+      "deleted": {
+        "bsonType": "boolean"
+      },
+      "name": {
+        "bsonType": "string"
+      },       
+      "password": {
+        "bsonType": "string"
+      },     
+      "groups": {
+        "bsonType": "array"
+      },
+      "data": {
+        "bsonType": "object"
+      }
+    },
+    "required": [ "name" ]
+  }
+}

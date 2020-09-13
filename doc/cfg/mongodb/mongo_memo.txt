@@ -1,0 +1,22 @@
+use admin
+
+db.createUser({ 
+  user: "admin",
+  pwd: "Pass1234",
+  roles: [ "userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"] 
+})
+
+// ujra login
+
+use admin
+
+db.grantRolesToUser("admin", [ { role: "root", db: "admin" } ] )
+
+use middlewareCenter
+
+db.createUser( { user: "mwuser", pwd: "Pass1234", roles: [] } )
+
+db.grantRolesToUser("mwuser",
+  [ "readWrite" , { role: "read", db: "middlewareCenter" } ],
+  { w: "majority" , wtimeout: 4000 }
+)

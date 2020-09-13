@@ -1,0 +1,6 @@
+/lib
+/index.js
+dirsum.txt
+.stopped
+./work/**
+!./work/placeholder.txt

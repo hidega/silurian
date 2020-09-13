@@ -1,0 +1,121 @@
+----- V2 ---------------------------------------------------------------------------------------------------------
+
+--- node api -----------------------------------------------------
+
+class Node {
+  label : String
+  data : PlainObject
+  domain : String
+}
+
+class Edge :: Node {
+  from : Node | ExternalID
+  to : Node | ExternalID
+  directed : Boolean
+}
+
+
+--- DB schema -----------------------------------------------------
+
+struct AuditEntry {
+  id
+  timestamp
+  eventKind
+  eventDetails
+}
+
+collection Audit {
+  entries : AuditEntry[]
+}
+
+collection Graph {
+  +----------------------------+
+  | nodes                      |
+  +----+-------+------+--------+
+  | id | label | data | domain | 
+  +----+-------+------+--------+
+
+  +--------------------------------------------------------+
+  | edges                                                  |
+  +----+-------+------+--------+--------------+------------+
+  | id | label | data | domain | node_from_fk | node_to_fk |
+  +----+-------+------+--------+--------------+------------+
+}
+
+collection Configuration {
+  maxDomains : integer
+  maxNodes : integer
+  auditMaxSizeMb : integer
+  ...
+}
+ 
+ 
+--- subgraph selection language -----------------------------------
+
+var opts = {
+  distinctResult: true,
+  maxQueryLength: 10000,
+  maxDepth: 10000
+}
+
+graph.query(query, opts).then(success).catch(failure)
+
+select node 
+  where id like "*xy*" or 
+        domain in ("a", "b", "c") or
+        numBetweenNotEqual(data.a.magicNumber 0 100) or
+        (data is not empty and label is "abcdefg") or
+        numBetween(edges 7 10) or
+        edges in (select edge where id label is "hello")
+  limit 10
+union 
+select edge
+  where id like "*123*" and 
+        data.foo like "FOO" and
+        nodeFrom in (select node where id in ("x10", "x11", "x12")) and
+        noteTo in (select node where id in (101, 111, "zz"))
+  limit 1        
+union
+select node traverse 
+  where id like "8765"
+  start where id is "1001"
+  limit 1000
+  limit depth 8
+union
+select edge traverse 
+  where label unlike "furulya" xor id like "222*"
+  start where id is "1001"
+  limit 1000
+  limit depth 8  
+union ...
+
+
+Relational predicates:
+
+  numBetween(d, m, n)
+  numBetweenNotEqual(d, m, n)
+  numGreater(d, n)
+  numGreaterOrEqual(d, n)
+  numLesser(d, n)
+  numLesserOrEqual(d, n)
+  equalIgnoreCase(s, r)
+
+
+String functions:
+
+  toLower(s)
+  toUpper(r)
+  subString()
+  strLength()
+  
+
+
+--- merge back --------------------------------------------------
+
+subgraph.mergeUp(txn, opts)
+
+subgraph.mergeDown(txn, opts)
+
+subgraph.mergeFull(txn, opts)
+
+

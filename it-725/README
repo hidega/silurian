@@ -1,0 +1,77 @@
+IT-725 - Integration test suite
+
+-------------------------------------------------------------------------------
+
+* Overview
+
+The main objective is to establish an automated test suite for the MongoDB
+backed message bus component.  The clients run in dedicated containers.  The
+browser frontend client communicates with the middleware through websocket.
+The proxy server handles and secures both HTTP and websocket traffic.  The
+time series database package acts as a system logger service.  The MongoDb
+server is a custom built server of which a single instance is running.  On the
+clientside, the Bootstrap 4 framework plus JQuery is used and examined.
+
+The following packages are involved and tested:
+  @silurian/messagebus
+  @silurian/counters
+  @silurian/tsdb
+  @silurian/filesrv 
+  @permian/proxy
+  @permian/websocket
+
+-------------------------------------------------------------------------------
+
+* Containers
+
+(no container) : HTTP hello world
+
+on the dmz network:
+
+lagrange::nodebase
+  HTTPS proxy, exposed to the outside world, WSS sserver connected to the bus.
+  it725-proxy
+  it725-wss
+
+euler::nodebase
+  system logger KVPS connected to mongodb
+  it725-syslog
+
+gauss::mongodb
+  mongodb with database within the container, plus ntp daemon
+
+cauchy::nodebase
+  business middleware: counters connected to mongodb and fileserver
+  it725-counters : operates hit counters
+  it725-filesrv : webclient provider
+  it725-eventsources : generates events for the web client via websocket
+                       and for local handlers
+  it725-eventhandlers : handles and counts incoming events
+
+dedekind::nodebase
+  network maintenance and troubleshooting tools
+
+
+Hierarchy
+
+<Linux base>---+---devonian-nodebase:1---+---it725-lagrange:1
+               |                         +---it725-euler:1
+               |                         +---it725-cauchy:1
+               |                         +---it725-dedekind:1
+               |
+               +---devonian-mongodb:1----+---it725-gauss:1
+
+-------------------------------------------------------------------------------
+
+* Packages
+
+  it725-commons : used as a library
+  it725-counters : runs as REST endpoint 
+  it725-eventhandlers : runs as message bus client 
+  it725-eventsources : runs as message bus client
+  it725-filesrv : runs as REST endpoint
+  it725-helloworld : runs as REST endpoint
+  it725-messagebus : used as a library
+  it725-proxy : runs as REST endpoint
+  it725-syslog : runs as REST endpoint
+  it725-wss : runs as REST endpoint
