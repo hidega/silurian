@@ -1,6 +1,6 @@
 'use strict'
 
-const { CmdAdapter } = require('@permian/mariadbfw')
+const { CommandAdapter } = require('@permian/mariadbfw')
 const commons = require('./commons')
 
 module.exports = cfg => {
@@ -15,12 +15,12 @@ module.exports = cfg => {
     configFilePath: commons.resolvePath(prgDir, 'etc', 'mariadb.cnf'),
     appBinDir: commons.resolvePath(prgDir, 'bin'),
     pidFilePath: commons.resolvePath(dataDir, 'server.pid'),
-    uid: Number(commons.getUid(CmdAdapter.Constants.MYSQL)),
-    gid: Number(commons.getGid(CmdAdapter.Constants.MYSQL)),
-    defaultHostname: CmdAdapter.Constants.LOCALHOST, // egyelore NE legyen mas!
-    superuserName: CmdAdapter.Constants.ROOT, // NE legyen mas!
+    uid: Number(commons.getUid(CommandAdapter.Constants.MYSQL)),
+    gid: Number(commons.getGid(CommandAdapter.Constants.MYSQL)),
+    defaultHostname: CommandAdapter.Constants.LOCALHOST, // egyelore NE legyen mas!
+    superuserName: CommandAdapter.Constants.ROOT, // NE legyen mas!
     superuserPwd: 'rootpwd',
-    secondaryUserName: CmdAdapter.Constants.MYSQL, // NE legyen mas!
+    secondaryUserName: CommandAdapter.Constants.MYSQL, // NE legyen mas!
     secondaryUserPwd: 'mysqlpwd',
     log: {
       dir: dataDir,
