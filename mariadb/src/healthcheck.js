@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('@permian/commons')
+const { throwError } = require('./commons')
 
 module.exports = cmdAdapter => cmdAdapter.pingServer()
   .then(res => res === 0 ? cmdAdapter.pingDatabase(cmdAdapter.getConfiguration().healthcheck.database) : throwError('Cannot ping server', 3555))
