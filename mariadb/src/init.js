@@ -7,7 +7,9 @@ module.exports = cmdAdapter => {
   const assertOk = (r, err) => r.code === 0 || commons.throwError('command failed', err)
   const cfg = cmdAdapter.getConfiguration()
   const restartDelayMs = cfg.restartDelayMs || 5000
-  return commons.fs.outputFile(cfg.configFilePath, mariadbfw.createConfig(cfg))
+  return cmdAdapter.pingServer()
+    .then(result => result.code === 0 && commons.throwError('The server is running.', 9263))
+    .then(() => commons.fs.outputFile(cfg.configFilePath, mariadbfw.createConfig(cfg)))
     .then(() => commons.fs.remove(cfg.dataDir))
     .then(() => commons.fs.ensureDir(cfg.dataDir))
     .then(() => cmdAdapter.initializeDatabase())
@@ -20,17 +22,9 @@ module.exports = cmdAdapter => {
     .then(() => cmdAdapter.pingServer())
     .then(r => assertOk(r, 7432))
     .then(() => cmdAdapter.mariadb([
-      '--user=' + cfg.superuserName,
+      '--user=' + cfg.mysqlUserName,
       '-e',
-      `set password for ${mariadbfw.Tools.fullUsername(cfg.superuserName, cfg.defaultHostname)} = password('${cfg.superuserPwd}')`
+      `set password for ${mariadbfw.Tools.fullUsername(cfg.mysqlUserName, cfg.defaultHostname)} = password('${cfg.mysqlUserPwd}')`
     ]))
     .then(r => assertOk(r, 6439))
-    .then(() => cmdAdapter.executeStatement({
-      user: cfg.superuserName,
-      password: cfg.superuserPwd,
-      statement: `set password for ${mariadbfw.Tools.fullUsername(cfg.mysqlUserName, cfg.defaultHostname)} = password('${cfg.mysqlUserPwd}');`
-    }))
-    .then(r => assertOk(r, 5501))
-    .then(() => cmdAdapter.shutdownServer())
-    .then(r => assertOk(r, 2843))
 }

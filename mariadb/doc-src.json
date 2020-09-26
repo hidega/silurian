@@ -1,0 +1,3 @@
+{
+  "allowedCtrs": [ { "path": "-.MariaDbManager", "args": {} }]
+}

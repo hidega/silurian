@@ -8,6 +8,7 @@ const restart = require('./restart')
 const shutdown = require('./shutdown')
 const parseCfg = require('./parse-cfg')
 const healthcheck = require('./healthcheck')
+const setRootPwd = require('./set-root-pwd')
 const dumpConfigFile = require('./dump-config-file')
 
 function MariaDbManager(cfg) {
@@ -19,8 +20,11 @@ function MariaDbManager(cfg) {
   self.purge = wrap(purge)
   self.restart = wrap(restart)
   self.shutdown = wrap(shutdown)
+  self.setRootPwd = wrap(setRootPwd)
   self.healthcheck = wrap(healthcheck)
   self.dumpConfigFile = wrap(dumpConfigFile)
 }
 
-module.exports = Object.freeze(MariaDbManager)
+module.exports = {
+  MariaDbManager: Object.freeze(MariaDbManager)
+}
