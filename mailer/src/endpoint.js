@@ -22,16 +22,14 @@ Endpoint.start = p => {
 
   const handlers = restEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
     GET: {
-      'ping': (context, ioaFactory) => Writer.flushResult(ioaFactory, 'OK')
+      ping: (context, ioaFactory) => Writer.flushResult(ioaFactory, 'OK')
     },
     POST: {
-      'send': (context, ioaFactory) => context.getRequestBodyAsObject((err, obj) => {
+      send: (context, ioaFactory) => context.getRequestBodyAsObject((err, obj) => {
         if(err) {
           Writer.flushError(ioaFactory, err)
         } else {
-          sendmail(obj.transportOpts || params.transportOpts, 
-                   obj.mailOpts, 
-                   err => err ? Writer.flushError(ioaFactory, err) : Writer.flushResult(ioaFactory, 'OK'))
+          sendmail(obj.transportOpts || params.transportOpts, obj.mailOpts, Writer.flushResult(ioaFactory, 'OK'))
         }
       })
     }
