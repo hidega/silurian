@@ -5,16 +5,16 @@
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
-    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.18.tgz",
-    "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.0.8.tgz",
+    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.19.tgz",
+    "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.0.9.tgz",
     "axios": "^0.19.2",
     "fs-extra": "^7.0.1"
   },
   "devDependencies": {
-    "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.4.tgz"
+    "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.6.tgz"
   },
   "scripts": {
-    "tr": "node -e \"require('@permian/build-tasks').taskrunner()\""
+    "tr": "node ./node_modules/@permian/build-tasks"
   },
   "files": [
     "index.js",

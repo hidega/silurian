@@ -1,6 +1,6 @@
 'use strict'
 
-const fs = require('fs-extra')
+const { fs } = require('./commons')
 const mimeTypes = require('./ext-mtype')
 const Handler = require('./handler')
 
