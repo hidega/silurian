@@ -1,11 +1,11 @@
 'use strict'
 
-const http = require('http') 
+const http = require('http')
 const commons = require('@permian/commons')
 const PidfileBasedManagement = require('@permian/pfbm')
 
 const startService = cfg => {
-  if(!cfg.newLocation || (!cfg.newLocation.startsWith('http://') && !cfg.newLocation.startsWith('https://'))) {
+  if (!cfg.newLocation || (!cfg.newLocation.startsWith('http://') && !cfg.newLocation.startsWith('https://'))) {
     throw new Error('Error: the newLocation parameter should start with  http(s):// | ' + cfg.newLocation)
   }
 
@@ -22,7 +22,7 @@ const startService = cfg => {
          </body>
        </html>`)
     res.end()
-  }).listen(cfg.port, cfg.host) 
+  }).listen(cfg.port, cfg.host)
 
   return () => {
     server.setTimeout(1000)
@@ -30,24 +30,24 @@ const startService = cfg => {
   }
 }
 
-const HttpRedirector = { 
+const HttpRedirector = {
   stop: (cfg, callback) => PidfileBasedManagement.stop({
     forceKill: true,
     pidfile: cfg.pidfile
-  }, callback || commons.proc.terminateProcess), 
+  }, callback || commons.proc.terminateProcess),
   start: (cfg, callback) => PidfileBasedManagement.start({
     starter: (onReady, onClose) => onReady(startService(cfg)),
     pidfile: cfg.pidfile
-  }, callback || commons.proc.terminateProcess), 
+  }, callback || commons.proc.terminateProcess),
   ping: (cfg, callback) => PidfileBasedManagement.ping({
     pidfile: cfg.pidfile
   }, (err, result) => {
     const cb = callback || commons.proc.terminateProcess
-    if(!err && result===0) { 
+    if (!err && result === 0) {
       cb('Could not find http redirector process by PID.')
     } else {
       const timeoutMs = 2000
-      if(cfg.socket) {
+      if (cfg.socket) {
         commons.net.checkIfSocketIsReachable(cfg.socket, timeoutMs, err => cb(err ? `${cfg.host}:${cfg.port} is not reachable.` : false))
       } else {
         commons.net.checkIfPortIsReachable(cfg.host, cfg.port, timeoutMs, err => cb(err ? `${cfg.host}:${cfg.port} is not reachable.` : false))
@@ -57,4 +57,3 @@ const HttpRedirector = {
 }
 
 module.exports = Object.freeze(HttpRedirector)
-

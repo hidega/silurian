@@ -1,5 +1,5 @@
 'use strict'
- 
+
 const sendmail = require('./sendmail')
 const Endpoint = require('./endpoint')
 const RestClient = require('./rest-client')

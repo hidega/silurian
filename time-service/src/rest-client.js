@@ -17,13 +17,13 @@ function RestClient(p) {
   const refreshInterval = setInterval(() => self.getTime().then(obj => {
     storedTime = parseInt(obj.data.result) || -1
     lastRefreshedTime = Date.now()
-  }).catch(e => storedTime = -1), params.refreshFrequencySec*1000)
+  }).catch(e => storedTime = -1), params.refreshFrequencySec * 1000)
 
   self.getTime = () => axios({ method: 'get', url: params.url + '/gettime' })
 
-  self.getStoredTime = () => storedTime===-1 ? -1 : storedTime + Date.now() - lastRefreshedTime
-  
-  self.getSequenceNr = () => axios({ method: 'get', url: params.url + '/seqnr' }) 
+  self.getStoredTime = () => storedTime === -1 ? -1 : storedTime + Date.now() - lastRefreshedTime
+
+  self.getSequenceNr = () => axios({ method: 'get', url: params.url + '/seqnr' })
 
   self.dispose = () => clearInterval(refreshInterval)
 }

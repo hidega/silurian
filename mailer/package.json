@@ -4,15 +4,14 @@
   "description": "mailer",
   "private": true,
   "devDependencies": {
-    "@permian/taskrunner": "https://people.inf.elte.hu/hiaiaat/npm/permian-taskrunner-1.0.1.tgz",
-    "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.2.tgz"
+    "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.6.tgz"
   },
   "scripts": {
-    "taru": "node -e \"require('@permian/taskrunner')()\""
+    "tr": "node ./node_modules/@permian/build-tasks"
   },
   "dependencies": {
-    "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.0.8.tgz",
-    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.17.tgz",
+    "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.0.9.tgz",
+    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.19.tgz",
     "axios": "^0.19.0",
     "nodemailer": ">=6.4.2"
   },

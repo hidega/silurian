@@ -1,6 +1,6 @@
 'use strict'
- 
-const {lang} = require('@permian/commons')
+
+const { lang } = require('@permian/commons')
 const sendmail = require('./sendmail')
 
 function Sender(to) {

@@ -8,12 +8,12 @@ function Endpoint(p) {}
 
 Endpoint.start = p => {
   const params = commons.lang.assignRecursive({
-    restEndpoint: { 
+    restEndpoint: {
       urlBasePath: 'mailer',
       maxConnections: 32,
       port: 56631,
       host: '127.0.0.1',
-      requestTimeout: 5*1000,
+      requestTimeout: 5 * 1000,
       logToStdout: false
     }
   }, p)
@@ -26,14 +26,14 @@ Endpoint.start = p => {
     },
     POST: {
       send: (context, ioaFactory) => context.getRequestBodyAsObject((err, obj) => {
-        if(err) {
+        if (err) {
           Writer.flushError(ioaFactory, err)
         } else {
           sendmail(obj.transportOpts || params.transportOpts, obj.mailOpts, Writer.flushResult(ioaFactory, 'OK'))
         }
       })
     }
-  }) 
+  })
 
   return restEndpoint.startInstance(handlers, params.restEndpoint)
 }

@@ -13,7 +13,7 @@ function BaseTicketManager(p) {
     cryptoServicesCfg: {}
   }, p)
 
-  if(self.params.cryptoServicesInstance && self.params.cryptoServicesCfg) {
+  if (self.params.cryptoServicesInstance && self.params.cryptoServicesCfg) {
     throw new Error('Bad config options')
   }
 
@@ -24,13 +24,13 @@ function BaseTicketManager(p) {
   self.decode = cryptoServices.decodeSync
 
   self.generateSalt = () => new Array(self.params.saltLengthMin + parseInt(Math.random(self.params.saltLengthMax - self.params.saltLengthMin)))
-                            .fill('').map(() => parseInt(Math.random()*10)).join('')
+    .fill('').map(() => parseInt(Math.random() * 10)).join('')
 
   self.checkObtainParameters = (userId, appContext, expiresEpoch) => {
-    if(!userId || !appContext || !expiresEpoch) {
+    if (!userId || !appContext || !expiresEpoch) {
       throw new Error('Missing parameter(s)')
     }
-    if(userId.includes(self.params.separator) || appContext.includes(self.params.separator) || isNaN(expiresEpoch)) {
+    if (userId.includes(self.params.separator) || appContext.includes(self.params.separator) || isNaN(expiresEpoch)) {
       throw new Error(`Invalid date or separator (${self.params.separator})`)
     }
   }

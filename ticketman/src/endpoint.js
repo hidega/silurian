@@ -1,7 +1,7 @@
 'use strict'
 
 const RestEndpoint = require('@permian/restendpoint')
-const {assignRecursive} = require('@permian/commons').lang
+const { assignRecursive } = require('@permian/commons').lang
 const SimpleTicketManager = require('./simple')
 
 function Endpoint(p) {}
@@ -13,7 +13,7 @@ Endpoint.start = p => {
       maxConnections: 32,
       port: 11290,
       host: '127.0.0.1',
-      requestTimeout: 5*1000,
+      requestTimeout: 5 * 1000,
       logToStdout: false
     },
     ticketManager: {
@@ -28,8 +28,8 @@ Endpoint.start = p => {
       'obtain-ticket': (context, ioaFactory) => RestEndpoint.tools.handleSafe(context, ioaFactory, writer => {
         const reqParams = context.getRequestParameters()
         params.ticketManager.instance.obtainTicket(reqParams.userid, reqParams.appctx, reqParams.expires)
-        .then(result => writer.flushResult(Buffer.from(result).toString('hex')))
-        .catch(() => writer.flushError(-101))
+          .then(result => writer.flushResult(Buffer.from(result).toString('hex')))
+          .catch(() => writer.flushError(-101))
       }),
       'decode-ticket': (context, ioaFactory) => RestEndpoint.tools.handleSafe(context, ioaFactory, writer => {
         const ticket = context.getRequestParameters().ticket

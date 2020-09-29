@@ -1,6 +1,6 @@
 'use strict'
 
-const {lang} = require('@permian/commons')
+const { lang } = require('@permian/commons')
 const BaseTicketManager = require('./basetm')
 
 function SimpleTicketManager(p) {
@@ -12,7 +12,7 @@ function SimpleTicketManager(p) {
       const salt = self.generateSalt()
       const rawTicket = salt + self.params.separator + userId + self.params.separator + (appContext || 'app') + self.params.separator + expiresEpoch
       callback(false, self.encode(Buffer.from(rawTicket)))
-    } catch(e) {
+    } catch (e) {
       callback(e)
     }
   }
@@ -21,15 +21,15 @@ function SimpleTicketManager(p) {
     try {
       const [, userId, appContext, expiresEpoch] = self.decode(ticket).toString().split(self.params.separator)
       callback(false, { userId, appContext, expiresEpoch: Number(expiresEpoch) })
-    } catch(e) {
+    } catch (e) {
       callback(e)
     }
   }
 
   BaseTicketManager.call(self, p)
-  
+
   self.obtainTicket = lang.promisifyIfNoCallback3(obtainTicket)
-  
+
   self.decodeTicket = lang.promisifyIfNoCallback1(decodeTicket)
 }
 

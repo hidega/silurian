@@ -21,18 +21,18 @@ function TimeMonitor(params) {
 
   const refreshTime = () => {
     universalEpochTime = false
-    const f = i => { 
+    const f = i => {
       workers[i % workers.length]().then(data => {
         universalEpochTime = parseInt(data.receiveTimestamp)
         lastRefreshedTime = Date.now()
-      }).catch(() => i>0 && f(--i))
+      }).catch(() => i > 0 && f(--i))
     }
-    f(parameters.tryServerTimes*workers.length)
+    f(parameters.tryServerTimes * workers.length)
   }
 
   refreshTime()
 
-  const interval = setInterval(refreshTime, 60*1000*parameters.pollIntervalMins)
+  const interval = setInterval(refreshTime, 60 * 1000 * parameters.pollIntervalMins)
 
   self.dispose = () => {
     workers.length = 0
@@ -42,7 +42,7 @@ function TimeMonitor(params) {
   }
 
   self.now = () => universalEpochTime ? universalEpochTime + Date.now() - lastRefreshedTime : -1
-  
+
   self.seq = () => {
     seqNr = seqNr + BigInt(1)
     return seqNr.toString()

@@ -13,7 +13,7 @@ Endpoint.start = p => {
       maxConnections: 32,
       port: 25364,
       host: '127.0.0.1',
-      requestTimeout: 5*1000,
+      requestTimeout: 5 * 1000,
       logToStdout: false
     },
     timeMonitor: {}
