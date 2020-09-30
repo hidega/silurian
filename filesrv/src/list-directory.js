@@ -8,16 +8,29 @@ function ListDirectoryHandler(context, ioaFactory, params) {
 
   Handler.call(self, context, ioaFactory, params)
 
+  const jsonResponseWriter = ioaFactory.createJsonResponseWriter()
+
+  const errorJson = (msg, code) => {
+    if (jsonResponseWriter) {
+      jsonResponseWriter.startObject()
+      jsonResponseWriter.flushObject('error', {
+        errorCode: code || -1,
+        msg: msg && msg.toString().substr(0, 80)
+      })
+      jsonResponseWriter.close()
+    }
+  }
+
   const listDirectory = dir => {
     const dirents = []
     const f = () => dir.read((err, dirent) => {
       if (err) {
-        self.errorJson('Read error', 4)
+        errorJson('Read error', 4)
       } else if (dirent === null) {
         dir.close()
-        self.jsonResponseWriter.startArray()
-        dirents.forEach(self.jsonResponseWriter.flushObject)
-        self.jsonResponseWriter.close()
+        jsonResponseWriter.startArray()
+        dirents.forEach(jsonResponseWriter.flushObject)
+        jsonResponseWriter.close()
       } else {
         let type = 'other'
         if (dirent.isDirectory()) {
@@ -37,16 +50,15 @@ function ListDirectoryHandler(context, ioaFactory, params) {
   }
 
   self.handle = () => {
-    self.createJsonResponseWriter()
     if (params.allowDirectoryListing) {
       try {
         const dirPath = self.resolvePath(context.getRequestParameters().path)
-        fs.opendir(dirPath, (err, dir) => err ? self.errorJson('Cannot open dir: ' + dirPath, 3) : listDirectory(dir))
+        fs.opendir(dirPath, (err, dir) => err ? errorJson('Cannot open dir: ' + dirPath, 3) : listDirectory(dir))
       } catch (e) {
-        self.errorJson('Server error: ' + e.toString(), 2)
+        errorJson('Server error: ' + e.toString(), 2)
       }
     } else {
-      self.errorJson('Directory listing is not allowed', 1)
+      errorJson('Directory listing is not allowed', 1)
     }
   }
 }

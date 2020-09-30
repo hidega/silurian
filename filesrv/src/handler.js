@@ -7,21 +7,6 @@ function Handler(context, ioaFactory, params) {
 
   self.baseDir = params.basedir ? path.resolve(params.basedir) : path.resolve(__dirname, '..', 'files')
 
-  self.createJsonResponseWriter = () => {
-    self.jsonResponseWriter = ioaFactory.createJsonResponseWriter()
-
-    self.errorJson = (msg, code) => {
-      if (self.jsonResponseWriter) {
-        self.jsonResponseWriter.startObject()
-        self.jsonResponseWriter.flushObject('error', {
-          errorCode: code || -1,
-          msg: msg && msg.toString().substr(0, 80)
-        })
-        self.jsonResponseWriter.close()
-      }
-    }
-  }
-
   self.getFileExtension = filePath => {
     const a = filePath.toString().split('.')
     return a[a.length - 1]
