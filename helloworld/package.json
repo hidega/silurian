@@ -8,7 +8,7 @@
     "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.6.tgz"
   },
   "scripts": {
-   "tr": "node ./node_modules/@permian/build-tasks"
+    "tr": "node ./node_modules/@permian/build-tasks"
   },
   "dependencies": {
     "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.19.tgz"
