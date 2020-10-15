@@ -35,7 +35,7 @@ function ListDirectoryHandler(context, ioaFactory, params) {
           .on(dirent.isSocket(), 'socket')
           .on(dirent.isSymbolicLink(), 'symlink')
           .on(dirent.isFile(), 'file')
-          .otherwise('other') 
+          .otherwise('other')
         dirents.push({ name: dirent.name, type })
         setImmediate(f)
       }

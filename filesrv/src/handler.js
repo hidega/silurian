@@ -12,7 +12,7 @@ function Handler(context, ioaFactory, params) {
 
   this.resolvePath = p => {
     p || (p = '/')
-    p = params.pathTranslator(p).trim().replace(/^\/+/, '')   
+    p = params.pathTranslator(p).trim().replace(/^\/+/, '')
     var result = this.baseDir
     if (p.length > 0) {
       result = path.resolve(this.baseDir, p)

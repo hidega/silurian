@@ -1,17 +1,17 @@
 'use strict'
 
-const commons = require('@permian/commons')
-const hellosrv = require('./hellosrv')
+var commons = require('@permian/commons')
+var hellosrv = require('./hellosrv')
 
-const pidfile = '/tmp/helloworld.pid'
-const pingTimeoutMs = 2000
+var pidfile = '/tmp/helloworld.pid'
+var pingTimeoutMs = 2000
 
-const HelloWorld = {
+var HelloWorld = {
   pidfile,
   pingTimeoutMs,
   start: (cfg, callback) => {
-    commons.files.dumpPidToFile(pidfile)
     try {
+      commons.files.dumpPidToFile(pidfile)
       hellosrv(cfg)
       callback && callback(0)
     } catch (e) {
@@ -19,11 +19,12 @@ const HelloWorld = {
     }
   },
   ping: (cfg, cb) => {
-    const callback = cb || (() => {})
+    var msg = `${cfg.host}:${cfg.port} is not reachable.`
+    var callback = cb || (() => {})
     if (cfg.socket) {
-      commons.net.checkIfSocketIsReachable(cfg.socket, pingTimeoutMs, err => callback(err ? `${cfg.host}:${cfg.port} is not reachable.` : false))
+      commons.net.checkIfSocketIsReachable(cfg.socket, pingTimeoutMs, err => callback(err ? msg : false))
     } else {
-      commons.net.checkIfPortIsReachable(cfg.host, cfg.port, pingTimeoutMs, err => callback(err ? `${cfg.host}:${cfg.port} is not reachable.` : false))
+      commons.net.checkIfPortIsReachable(cfg.host, cfg.port, pingTimeoutMs, err => callback(err ? msg : false))
     }
   }
 }
