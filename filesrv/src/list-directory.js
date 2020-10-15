@@ -1,16 +1,14 @@
 'use strict'
 
-const { fs } = require('./commons')
-const Handler = require('./handler')
+var commons = require('./commons')
+var Handler = require('./handler')
 
 function ListDirectoryHandler(context, ioaFactory, params) {
-  const self = this
+  Handler.call(this, context, ioaFactory, params)
 
-  Handler.call(self, context, ioaFactory, params)
+  var jsonResponseWriter = ioaFactory.createJsonResponseWriter()
 
-  const jsonResponseWriter = ioaFactory.createJsonResponseWriter()
-
-  const errorJson = (msg, code) => {
+  var errorJson = (msg, code) => {
     if (jsonResponseWriter) {
       jsonResponseWriter.startObject()
       jsonResponseWriter.flushObject('error', {
@@ -21,9 +19,9 @@ function ListDirectoryHandler(context, ioaFactory, params) {
     }
   }
 
-  const listDirectory = dir => {
-    const dirents = []
-    const f = () => dir.read((err, dirent) => {
+  var listDirectory = dir => {
+    var dirents = []
+    var f = () => dir.read((err, dirent) => {
       if (err) {
         errorJson('Read error', 4)
       } else if (dirent === null) {
@@ -32,16 +30,12 @@ function ListDirectoryHandler(context, ioaFactory, params) {
         dirents.forEach(jsonResponseWriter.flushObject)
         jsonResponseWriter.close()
       } else {
-        let type = 'other'
-        if (dirent.isDirectory()) {
-          type = 'dir'
-        } else if (dirent.isSocket()) {
-          type = 'socket'
-        } else if (dirent.isSymbolicLink()) {
-          type = 'symlink'
-        } else if (dirent.isFile()) {
-          type = 'file'
-        }
+        var type = commons.matcher()
+          .on(dirent.isDirectory(), 'dir')
+          .on(dirent.isSocket(), 'socket')
+          .on(dirent.isSymbolicLink(), 'symlink')
+          .on(dirent.isFile(), 'file')
+          .otherwise('other') 
         dirents.push({ name: dirent.name, type })
         setImmediate(f)
       }
@@ -49,18 +43,12 @@ function ListDirectoryHandler(context, ioaFactory, params) {
     f()
   }
 
-  self.handle = () => {
-    if (params.allowDirectoryListing) {
-      try {
-        const dirPath = self.resolvePath(context.getRequestParameters().path)
-        fs.opendir(dirPath, (err, dir) => err ? errorJson('Cannot open dir: ' + dirPath, 3) : listDirectory(dir))
-      } catch (e) {
-        errorJson('Server error: ' + e.toString(), 2)
-      }
-    } else {
-      errorJson('Directory listing is not allowed', 1)
-    }
-  }
+  this.handle = () => commons.matcher()
+    .on(params.allowDirectoryListing, () => commons.try(() => {
+      var dirPath = this.resolvePath(context.getRequestParameters().path)
+      commons.fs.opendir(dirPath, (err, dir) => err ? errorJson('Cannot open dir: ' + dirPath, 3) : listDirectory(dir))
+    }, e => errorJson('Server error: ' + e.toString(), 2)))
+    .otherwise(() => errorJson('Directory listing is not allowed', 1))
 }
 
 module.exports = (context, ioaFactory, params) => new ListDirectoryHandler(context, ioaFactory, params)

@@ -1,31 +1,27 @@
 'use strict'
 
-const path = require('path')
+var path = require('path')
 
 function Handler(context, ioaFactory, params) {
-  const self = this
+  this.baseDir = params.basedir ? path.resolve(params.basedir) : path.resolve(__dirname, '..', 'files')
 
-  self.baseDir = params.basedir ? path.resolve(params.basedir) : path.resolve(__dirname, '..', 'files')
-
-  self.getFileExtension = filePath => {
-    const a = filePath.toString().split('.')
+  this.getFileExtension = filePath => {
+    var a = filePath.toString().split('.')
     return a[a.length - 1]
   }
 
-  self.resolvePath = p => {
+  this.resolvePath = p => {
     p || (p = '/')
-    p = params.pathTranslator(p).trim().replace(/^\/+/, '')
-    let result = self.baseDir
+    p = params.pathTranslator(p).trim().replace(/^\/+/, '')   
+    var result = this.baseDir
     if (p.length > 0) {
-      result = path.resolve(self.baseDir, p)
-      if (!result.toString().startsWith(self.baseDir.toString())) {
-        result = self.baseDir
-      }
+      result = path.resolve(this.baseDir, p)
+      result.toString().startsWith(this.baseDir.toString()) || (result = this.baseDir)
     }
     return result
   }
 
-  self.isGzipped = reqParams => reqParams.zipped && (reqParams.zipped === '1' || reqParams.zipped === 'true' || reqParams.zipped === 'yes')
+  this.isGzipped = reqParams => reqParams.zipped && (reqParams.zipped === '1' || reqParams.zipped === 'true' || reqParams.zipped === 'yes')
 }
 
 module.exports = Handler

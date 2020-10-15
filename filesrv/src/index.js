@@ -1,15 +1,15 @@
 'use strict'
 
-const Server = require('@permian/restendpoint')
-const { lang } = require('@permian/commons')
-const createGetFileHandler = require('./get-file')
-const createListDirectoryHandler = require('./list-directory')
-const RestClient = require('./rest-client')
+var Server = require('@permian/restendpoint')
+var commons = require('./commons')
+var createGetFileHandler = require('./get-file')
+var createListDirectoryHandler = require('./list-directory')
+var RestClient = require('./rest-client')
 
 function FileServer() {}
 
 FileServer.start = p => {
-  const params = lang.assignRecursive({
+  var params = commons.assignRecursive({
     restEndpoint: {
       urlBasePath: 'file-service',
       maxConnections: 32,
@@ -25,7 +25,7 @@ FileServer.start = p => {
     }
   }, p)
 
-  const handlers = Server.prependPathToHandlers(params.restEndpoint.urlBasePath, {
+  var handlers = Server.prependPathToHandlers(params.restEndpoint.urlBasePath, {
     GET: {
       'get-file': (context, ioaFactory) => createGetFileHandler(context, ioaFactory, params.fileServer).handle(),
       'list-directory': (context, ioaFactory) => createListDirectoryHandler(context, ioaFactory, params.fileServer).handle()
