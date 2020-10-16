@@ -4,14 +4,14 @@
   "description": "mailer",
   "private": true,
   "devDependencies": {
-    "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.6.tgz"
+    "@silurian/build-tasks": "../build-tasks"
   },
   "scripts": {
-    "tr": "node ./node_modules/@permian/build-tasks"
+    "tr": "node ./node_modules/@silurian/build-tasks"
   },
   "dependencies": {
     "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.0.9.tgz",
-    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.19.tgz",
+    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.1.0.tgz",
     "axios": "^0.19.0",
     "nodemailer": ">=6.4.2"
   },
@@ -19,6 +19,7 @@
   "files": [
     "index.js",
     "dirsum.txt",
+    "js-docs.html",
     "lib/**"
   ]
 }

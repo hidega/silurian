@@ -1,13 +1,13 @@
 'use strict'
 
-const commons = require('@permian/commons')
-const restEndpoint = require('@permian/restendpoint')
-const sendmail = require('./sendmail')
+var commons = require('./commons')
+var restEndpoint = require('@permian/restendpoint')
+var sendmail = require('./sendmail')
 
 function Endpoint(p) {}
 
 Endpoint.start = p => {
-  const params = commons.lang.assignRecursive({
+  var params = commons.assignRecursive({
     restEndpoint: {
       urlBasePath: 'mailer',
       maxConnections: 32,
@@ -18,20 +18,16 @@ Endpoint.start = p => {
     }
   }, p)
 
-  const Writer = restEndpoint.tools.SimpleJsonWriter
+  var Writer = restEndpoint.tools.SimpleJsonWriter
 
-  const handlers = restEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
+  var handlers = restEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
     GET: {
       ping: (context, ioaFactory) => Writer.flushResult(ioaFactory, 'OK')
     },
     POST: {
-      send: (context, ioaFactory) => context.getRequestBodyAsObject((err, obj) => {
-        if (err) {
-          Writer.flushError(ioaFactory, err)
-        } else {
-          sendmail(obj.transportOpts || params.transportOpts, obj.mailOpts, Writer.flushResult(ioaFactory, 'OK'))
-        }
-      })
+      send: (context, ioaFactory) => context.getRequestBodyAsObject((err, obj) => commons.matcher()
+        .on(err, () => Writer.flushError(ioaFactory, err))
+        .otherwise(() => sendmail(obj.transportOpts || params.transportOpts, obj.mailOpts, Writer.flushResult(ioaFactory, 'OK'))))
     }
   })
 

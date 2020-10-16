@@ -1,21 +1,17 @@
 'use strict'
 
-const nodemailer = require('nodemailer')
-const { lang } = require('@permian/commons')
+var nodemailer = require('nodemailer')
+var commons = require('./commons')
 
 module.exports = (transportOpts, mailOpts, callback) => {
-  const isntString = lang.isntString
-
-  try {
-    if (isntString(transportOpts.host) ||
-      isntString(transportOpts.username) ||
-      isntString(transportOpts.password) ||
-      isntString(mailOpts.from) ||
-      isntString(mailOpts.to)) {
-      lang.throwError('Bad mail options')
-    }
-
-    const transportOptions = {
+  if (commons.isntString(transportOpts.host) ||
+    commons.isntString(transportOpts.username) ||
+    commons.isntString(transportOpts.password) ||
+    commons.isntString(mailOpts.from) ||
+    commons.isntString(mailOpts.to)) {
+    callback('Bad mail options')
+  } else {
+    var transportOptions = {
       host: transportOpts.host,
       port: transportOpts.port || 465,
       secure: true,
@@ -24,14 +20,12 @@ module.exports = (transportOpts, mailOpts, callback) => {
         pass: transportOpts.password
       }
     }
-    const mailOptions = {
+    var mailOptions = {
       from: mailOpts.from,
       to: mailOpts.to,
       subject: mailOpts.subject || 'None',
       text: mailOpts.text || ''
     }
     nodemailer.createTransport(transportOptions).sendMail(mailOptions, callback)
-  } catch (e) {
-    callback(e)
   }
 }

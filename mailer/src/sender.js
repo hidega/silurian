@@ -1,19 +1,17 @@
 'use strict'
 
-const { lang } = require('@permian/commons')
-const sendmail = require('./sendmail')
+var { lang } = require('@permian/commons')
+var sendmail = require('./sendmail')
 
 function Sender(to) {
-  const self = this
-
-  const transportOpts = Object.assign({
+  var transportOpts = Object.assign({
     secure: true,
     port: 465
   }, to)
 
-  const send = (mailOpts, callback) => sendmail(transportOpts, mailOpts, callback)
+  var send = (mailOpts, callback) => sendmail(transportOpts, mailOpts, callback)
 
-  self.send = lang.promisifyIfNoCallback2(send)
+  this.send = lang.promisifyIfNoCallback2(send)
 }
 
 module.exports = Sender
