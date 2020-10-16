@@ -1,34 +1,34 @@
 'use strict'
 
-const commons = require('@permian/commons')
-const restEndpoint = require('@permian/restendpoint')
-const TimeMonitor = require('./time-monitor')
+var restEndpoint = require('@permian/restendpoint')
+var TimeMonitor = require('./time-monitor')
 
 function Endpoint(p) {}
 
 Endpoint.start = p => {
-  const params = commons.lang.assignRecursive({
-    restEndpoint: {
-      urlBasePath: 'timeservice',
-      maxConnections: 32,
-      port: 25364,
-      host: '127.0.0.1',
-      requestTimeout: 5 * 1000,
-      logToStdout: false
-    },
-    timeMonitor: {}
-  }, p)
+  var params = p || {}
 
-  const timeMonitor = new TimeMonitor(params.timeMonitor)
+  params.timeMonitor = Object.assign({}, p.timeMonitor)
 
-  const handlers = restEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
+  params.restEndpoint = Object.assign({
+    urlBasePath: 'timeservice',
+    maxConnections: 32,
+    port: 25364,
+    host: '127.0.0.1',
+    requestTimeout: 5 * 1000,
+    logToStdout: false
+  }, p.restEndpoint)
+
+  var timeMonitor = new TimeMonitor(params.timeMonitor)
+
+  var handlers = restEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
     GET: {
       'seqnr': (context, ioaFactory) => restEndpoint.tools.SimpleJsonWriter.flushResult(ioaFactory, timeMonitor.seq()),
       'gettime': (context, ioaFactory) => restEndpoint.tools.SimpleJsonWriter.flushResult(ioaFactory, timeMonitor.now())
     }
   })
 
-  const stop = restEndpoint.startInstance(handlers, params.restEndpoint)
+  var stop = restEndpoint.startInstance(handlers, params.restEndpoint)
 
   return () => {
     stop()

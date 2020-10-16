@@ -19,7 +19,7 @@
   "files": [
     "index.js",
     "dirsum.txt",
-    "js-docs.html",
+    "js-doc.html",
     "lib/**"
   ]
 }

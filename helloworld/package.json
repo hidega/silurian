@@ -5,10 +5,10 @@
   "main": "index.js",
   "private": true,
   "devDependencies": {
-    "@permian/build-tasks": "../build-tasks"
+    "@silurian/build-tasks": "../build-tasks"
   },
   "scripts": {
-    "tr": "node ./node_modules/@permian/build-tasks"
+    "tr": "node ./node_modules/@silurian/build-tasks"
   },
   "dependencies": {
     "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.1.0.tgz"

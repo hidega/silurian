@@ -1,31 +1,29 @@
 'use strict'
 
-const axios = require('axios')
+var axios = require('axios')
 
 function RestClient(p) {
-  const self = this
-
-  const params = Object.assign({
+  var params = Object.assign({
     url: 'http://127.0.0.1:25364/timeservice',
     refreshFrequencySec: 120
   }, p)
   params.url = params.url.replace(/\/+$/, '')
 
-  let storedTime = Date.now()
-  let lastRefreshedTime = Date.now()
+  var storedTime = Date.now()
+  var lastRefreshedTime = Date.now()
 
-  const refreshInterval = setInterval(() => self.getTime().then(obj => {
+  var refreshInterval = setInterval(() => this.getTime().then(obj => {
     storedTime = parseInt(obj.data.result) || -1
     lastRefreshedTime = Date.now()
   }).catch(e => storedTime = -1), params.refreshFrequencySec * 1000)
 
-  self.getTime = () => axios({ method: 'get', url: params.url + '/gettime' })
+  this.getTime = () => axios({ method: 'get', url: params.url + '/gettime' })
 
-  self.getStoredTime = () => storedTime === -1 ? -1 : storedTime + Date.now() - lastRefreshedTime
+  this.getStoredTime = () => storedTime === -1 ? -1 : storedTime + Date.now() - lastRefreshedTime
 
-  self.getSequenceNr = () => axios({ method: 'get', url: params.url + '/seqnr' })
+  this.getSequenceNr = () => axios({ method: 'get', url: params.url + '/seqnr' })
 
-  self.dispose = () => clearInterval(refreshInterval)
+  this.dispose = () => clearInterval(refreshInterval)
 }
 
 module.exports = RestClient
