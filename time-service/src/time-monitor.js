@@ -12,6 +12,7 @@ function TimeMonitor(params) {
     tryServerTimes: 2
   }, params)
 
+  var uid = parseInt((Date.now() / 1000000) % 1000) + 1000 * (parseInt(Math.random() * 8999999) + 1000000)
   var seqNr = BigInt(0)
   var universalEpochTime = false
   var lastRefreshedTime = false
@@ -45,6 +46,8 @@ function TimeMonitor(params) {
     seqNr = seqNr + BigInt(1)
     return seqNr.toString()
   }
+
+  this.uid = () => uid.toString()
 }
 
 module.exports = TimeMonitor

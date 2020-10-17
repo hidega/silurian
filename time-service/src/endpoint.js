@@ -23,7 +23,7 @@ Endpoint.start = p => {
 
   var handlers = restEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
     GET: {
-      'seqnr': (context, ioaFactory) => restEndpoint.tools.SimpleJsonWriter.flushResult(ioaFactory, timeMonitor.seq()),
+      'seqnr': (context, ioaFactory) => restEndpoint.tools.SimpleJsonWriter.flushResult(ioaFactory, { uid: timeMonitor.uid(), seq: timeMonitor.seq() }),
       'gettime': (context, ioaFactory) => restEndpoint.tools.SimpleJsonWriter.flushResult(ioaFactory, timeMonitor.now())
     }
   })
