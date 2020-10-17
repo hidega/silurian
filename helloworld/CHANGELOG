@@ -1,6 +1,11 @@
+2020-10-11  hidega  hidega@caesar.elte.hu
+
+* version 1.0.2
+
+
 2020-08-21  hidega  hidega@caesar.elte.hu
 
-* The code was rewritten toi run in a dedicated container.
+* The code was rewritten to run in a dedicated container.
 
 
 2019-05-06  hidega  hidega@caesar.elte.hu
