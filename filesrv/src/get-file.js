@@ -35,8 +35,7 @@ function GetFileHandler(context, ioaFactory, params) {
         writer.write(buf.subarray(0, bytesRead))
         setImmediate(f)
       })
-      .on(!writerError, () => writer.close())
-      .end())
+      .otherwise(() => writer.close()))
     f()
   }
 
