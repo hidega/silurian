@@ -1,10 +1,10 @@
 'use strict'
 
-const mariadbfw = require('@permian/mariadbfw')
-const commons = require('./commons')
+var mariadbfw = require('@permian/mariadbfw')
+var commons = require('./commons')
 
 module.exports = cmdAdapter => {
-  const cfg = cmdAdapter.getConfiguration()
+  var cfg = cmdAdapter.getConfiguration()
   return cmdAdapter.mariadb([
       '--user=' + cfg.superuserName,
       '-e',

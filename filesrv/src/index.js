@@ -15,6 +15,7 @@ FileServer.start = p => {
       maxConnections: 32,
       port: 5802,
       host: '127.0.0.1',
+      id: '1',
       requestTimeout: 20 * 1000,
       logToStdout: false
     },

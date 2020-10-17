@@ -1,12 +1,12 @@
 'use strict'
 
-const mariadbfw = require('@permian/mariadbfw')
-const commons = require('./commons')
+var mariadbfw = require('@permian/mariadbfw')
+var commons = require('./commons')
 
 module.exports = cmdAdapter => {
-  const assertOk = (r, err) => r.code === 0 || commons.throwError('command failed', err)
-  const cfg = cmdAdapter.getConfiguration()
-  const restartDelayMs = cfg.restartDelayMs || 5000
+  var assertOk = (r, err) => r.code === 0 || commons.throwError('command failed', err)
+  var cfg = cmdAdapter.getConfiguration()
+  var restartDelayMs = cfg.restartDelayMs || 5000
   return cmdAdapter.pingServer()
     .then(result => result.code === 0 && commons.throwError('The server is running.', 9263))
     .then(() => commons.fs.outputFile(cfg.configFilePath, mariadbfw.createConfig(cfg)))

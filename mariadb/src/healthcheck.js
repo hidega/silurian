@@ -1,10 +1,10 @@
 'use strict'
 
-const { throwError } = require('./commons')
-const { fork } = require('child_process')
+var { throwError } = require('./commons')
+var { fork } = require('child_process')
 
 module.exports = cmdAdapter => {
-  const cfg = cmdAdapter.getConfiguration()
+  var cfg = cmdAdapter.getConfiguration()
   cfg.log.rotateOnHealthcheck && fork('./rotate-logs', JSON.stringify(cfg))
   return cmdAdapter.pingServer()
     .then(res => res === 0 ? cmdAdapter.pingDatabase(cfg.healthcheck.database || 'test') : throwError('Cannot ping server', 3555))

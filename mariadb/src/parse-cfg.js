@@ -1,13 +1,13 @@
 'use strict'
 
-const { CommandAdapter } = require('@permian/mariadbfw')
-const commons = require('./commons')
+var { CommandAdapter } = require('@permian/mariadbfw')
+var commons = require('./commons')
 
 module.exports = cfg => {
-  const appDir = '/opt/prg/mariadb'
-  const prgDir = appDir + '/prg'
-  const dataDir = '/opt/data/mariadb'
-  const defaultCfg = {
+  var appDir = '/opt/prg/mariadb'
+  var prgDir = appDir + '/prg'
+  var dataDir = '/opt/data/mariadb'
+  var defaultCfg = {
     host: '127.0.0.1',
     port: '13306',
     dataDir,

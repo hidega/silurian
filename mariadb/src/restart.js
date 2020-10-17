@@ -1,9 +1,9 @@
 'use strict'
 
-const commons = require('./commons')
+var commons = require('./commons')
 
 module.exports = cmdAdapter => {
-  const restartDelayMs = cmdAdapter.getConfiguration().restartDelayMs || 5000
+  var restartDelayMs = cmdAdapter.getConfiguration().restartDelayMs || 5000
   return cmdAdapter.shutdownServer().catch(() => {})
     .then(() => commons.sleep(restartDelayMs))
     .then(() => cmdAdapter.startServer({

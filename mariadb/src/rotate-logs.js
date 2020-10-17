@@ -1,18 +1,18 @@
 'use strict'
 
-const commons = require('./commons')
-const CmdAdapter = require('./cmd/adapter')
+var commons = require('./commons')
+var CmdAdapter = require('./cmd/adapter')
 
-const lockFile = commons.resolvePath(commons.systemTmpDir, 'mariadb-logfile-rotator.lock')
-const errorFile = commons.resolvePath(commons.systemTmpDir, 'mariadb-logfile-rotator.err')
-const logfileMaxSizeMB = 32
-const MB = 1000000
+var lockFile = commons.resolvePath(commons.systemTmpDir, 'mariadb-logfile-rotator.lock')
+var errorFile = commons.resolvePath(commons.systemTmpDir, 'mariadb-logfile-rotator.err')
+var logfileMaxSizeMB = 32
+var MB = 1000000
 
-const writeErrorFile = e => commons.fs.writeFile(errorFile, e.toString()).catch(() => {})
+var writeErrorFile = e => commons.fs.writeFile(errorFile, e.toString()).catch(() => {})
 
-const checkStat = (stat, limit) => stat.size / MB > (limit || logfileMaxSizeMB)
+var checkStat = (stat, limit) => stat.size / MB > (limit || logfileMaxSizeMB)
 
-const rotateLogs = (lock, adapter, logCfg = adapter.getConfiguration().log) => commons.fs.stat(logCfg.generalLogFile)
+var rotateLogs = (lock, adapter, logCfg = adapter.getConfiguration().log) => commons.fs.stat(logCfg.generalLogFile)
   .then(stat => checkStat(stat, logCfg.generalLogfileMaxSizeMB) ? adapter.rotateGeneralLogfile() : 0)
   .catch(writeErrorFile)
   .then(() => commons.fs.stat(logCfg.errorLogfile))

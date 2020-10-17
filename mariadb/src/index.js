@@ -1,20 +1,20 @@
 'use strict'
 
-const mariadbfw = require('@permian/mariadbfw')
-const ping = require('./ping')
-const init = require('./init')
-const purge = require('./purge')
-const restart = require('./restart')
-const shutdown = require('./shutdown')
-const parseCfg = require('./parse-cfg')
-const healthcheck = require('./healthcheck')
-const setRootPwd = require('./set-root-pwd')
-const dumpConfigFile = require('./dump-config-file')
+var mariadbfw = require('@permian/mariadbfw')
+var ping = require('./ping')
+var init = require('./init')
+var purge = require('./purge')
+var restart = require('./restart')
+var shutdown = require('./shutdown')
+var parseCfg = require('./parse-cfg')
+var healthcheck = require('./healthcheck')
+var setRootPwd = require('./set-root-pwd')
+var dumpConfigFile = require('./dump-config-file')
 
 function MariaDbManager(cfg) {
-  const self = this
-  const cmdAdapter = new mariadbfw.CommandAdapter(parseCfg(cfg))
-  const wrap = (f, callback) => () => callback ? f(cmdAdapter).then(r => callback(false, r)).catch(e => callback(e || -1)) : f(cmdAdapter)
+  var self = this
+  var cmdAdapter = new mariadbfw.CommandAdapter(parseCfg(cfg))
+  var wrap = (f, callback) => () => callback ? f(cmdAdapter).then(r => callback(false, r)).catch(e => callback(e || -1)) : f(cmdAdapter)
   self.ping = wrap(ping)
   self.init = wrap(init)
   self.purge = wrap(purge)
