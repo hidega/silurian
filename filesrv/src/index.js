@@ -38,4 +38,8 @@ FileServer.start = p => {
 
 FileServer.RestClient = RestClient
 
+FileServer.tools = {
+  dumpPidToFile: commons.dumpPidToFile
+}
+
 module.exports = Object.freeze(FileServer)
