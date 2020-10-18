@@ -28,6 +28,7 @@ FileServer.start = p => {
 
   var handlers = Server.prependPathToHandlers(params.restEndpoint.urlBasePath, {
     GET: {
+      'ping': (context, ioaFactory) => Server.tools.SimpleJsonWriter.flushResult(ioaFactory, 'OK'),
       'get-file': (context, ioaFactory) => createGetFileHandler(context, ioaFactory, params.fileServer).handle(),
       'list-directory': (context, ioaFactory) => createListDirectoryHandler(context, ioaFactory, params.fileServer).handle()
     }
