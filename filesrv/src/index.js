@@ -5,26 +5,13 @@ var commons = require('./commons')
 var createGetFileHandler = require('./get-file')
 var createListDirectoryHandler = require('./list-directory')
 var RestClient = require('./rest-client')
+var healthcheck = require('./healthcheck')
+var parseParameters = require('./parse-parameters')
 
 function FileServer() {}
 
 FileServer.start = p => {
-  var params = commons.assignRecursive({
-    restEndpoint: {
-      urlBasePath: 'file-service',
-      maxConnections: 32,
-      port: 5802,
-      host: '127.0.0.1',
-      id: '1',
-      requestTimeout: 20 * 1000,
-      logToStdout: false
-    },
-    fileServer: {
-      pathTranslator: p => p,
-      additionalTypeMappings: {},
-      allowDirectoryListing: true
-    }
-  }, p)
+  var params = parseParameters(p)
 
   var handlers = Server.prependPathToHandlers(params.restEndpoint.urlBasePath, {
     GET: {
@@ -38,6 +25,8 @@ FileServer.start = p => {
 }
 
 FileServer.RestClient = RestClient
+
+FileServer.healthcheck = healthcheck
 
 FileServer.tools = {
   dumpPidToFile: commons.dumpPidToFile

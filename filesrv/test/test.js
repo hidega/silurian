@@ -5,9 +5,13 @@
 
 var FileServer = require('../src')
 
-FileServer.start({
+var cfg = {
   restEndpoint: {
     urlBasePath: 'web/file-service',
     logToStdout: true
   }
-})
+}
+
+FileServer.start(cfg)
+
+setInterval(() => FileServer.healthcheck(cfg, err => console.log('ping ' + (err ? 'ERROR: ' + err : 'OK'))), 5000)
