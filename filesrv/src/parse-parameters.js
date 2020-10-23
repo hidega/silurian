@@ -13,6 +13,7 @@ module.exports = p => commons.assignRecursive({
     logToStdout: false
   },
   fileServer: {
+    basedir: false,
     pathTranslator: p => p,
     additionalTypeMappings: {},
     allowDirectoryListing: true

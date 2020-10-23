@@ -28,6 +28,8 @@ FileServer.RestClient = RestClient
 
 FileServer.healthcheck = healthcheck
 
+FileServer.ping = healthcheck
+
 FileServer.tools = {
   dumpPidToFile: commons.dumpPidToFile
 }
