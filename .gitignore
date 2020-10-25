@@ -3,4 +3,4 @@ generated-jsdoc/
 package-lock.json
 local.json
 **.tgz
-
+**.nopush

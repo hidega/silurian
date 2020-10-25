@@ -1,15 +1,18 @@
 'use strict'
 
-const ReferentialTicketManager = require('./referential')
-const SimpleTicketManager = require('./simple')
-const MongodbDao = require('./mongodb-dao')
-const Endpoint = require('./endpoint')
-const RestClient = require('./rest-client')
+var ReferentialTicketManager = require('./referential')
+var SimpleTicketManager = require('./simple')
+var MongodbDao = require('./mongodb-dao')
+var Endpoint = require('./endpoint')
+var RestClient = require('./rest-client')
+var ping = require('./ping')
 
 module.exports = {
   ReferentialTicketManager,
   SimpleTicketManager,
   createMongodbDao: MongodbDao.createInstance,
   Endpoint,
-  RestClient
+  RestClient,
+  start: Endpoint.start,
+  ping
 }
