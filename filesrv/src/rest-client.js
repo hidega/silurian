@@ -4,8 +4,10 @@ var axios = require('axios')
 
 function RestClient(p) {
   var params = Object.assign({
+    requestTimeoutSec: 10,
     url: 'http://127.0.0.1:5802/file-service'
   }, p)
+
   this.getFile = (filename, params) => axios({
     method: 'get',
     responseType: params.stream ? 'stream' : 'arraybuffer',

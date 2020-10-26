@@ -5,6 +5,7 @@ var axios = require('axios')
 function RestClient(p) {
   var params = Object.assign({
     url: 'http://127.0.0.1:25364/timeservice',
+    requestTimeoutSec: 10,
     refreshFrequencySec: 120
   }, p)
   params.url = params.url.replace(/\/+$/, '')
@@ -25,5 +26,7 @@ function RestClient(p) {
 
   this.dispose = () => clearInterval(refreshInterval)
 }
+
+RestClient.newInstance = p => new RestClient(p)  
 
 module.exports = RestClient

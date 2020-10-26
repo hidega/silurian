@@ -1,9 +1,7 @@
 'use strict'
 
-var commons = require('@permian/commons')
+var RestClient = require('./rest-client')
 
-module.exports = (cfg, callback) => {
-  var msg = `${cfg.host}:${cfg.port} is not reachable.`
-  var pingTimeoutMs = 10000
-  commons.net.checkIfPortIsReachable(cfg.host, cfg.port, pingTimeoutMs, err => callback(err ? msg : false))
-}
+module.exports = (cfg, callback) => RestClient.newInstance({
+  url: `http://${cfg.restEndpoint.host}:${cfg.restEndpoint.port}/${cfg.restEndpoint.urlBasePath}`
+}).then(() => callback()).catch(() => callback(1))

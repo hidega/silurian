@@ -1,6 +1,6 @@
 'use strict'
 
-var Server = require('@permian/restendpoint')
+var RestEndpoint = require('@permian/restendpoint')
 var commons = require('./commons')
 var createGetFileHandler = require('./get-file')
 var createListDirectoryHandler = require('./list-directory')
@@ -13,15 +13,15 @@ function FileServer() {}
 FileServer.start = p => {
   var params = parseParameters(p)
 
-  var handlers = Server.prependPathToHandlers(params.restEndpoint.urlBasePath, {
+  var handlers = RestEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
     GET: {
-      'ping': (context, ioaFactory) => Server.tools.SimpleJsonWriter.flushResult(ioaFactory, 'OK'),
+      'ping': (context, ioaFactory) => RestEndpoint.tools.SimpleJsonWriter.flushResult(ioaFactory, 'OK'),
       'get-file': (context, ioaFactory) => createGetFileHandler(context, ioaFactory, params.fileServer).handle(),
       'list-directory': (context, ioaFactory) => createListDirectoryHandler(context, ioaFactory, params.fileServer).handle()
     }
   })
 
-  return Server.startInstance(handlers, params.restEndpoint)
+  return RestEndpoint.startInstance(handlers, params.restEndpoint)
 }
 
 FileServer.RestClient = RestClient
