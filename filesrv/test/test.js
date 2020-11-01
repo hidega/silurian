@@ -9,6 +9,9 @@ var cfg = {
   restEndpoint: {
     urlBasePath: 'web/file-service',
     logToStdout: true
+  },
+  fileServer: {
+    basedir: '/tmp'
   }
 }
 
