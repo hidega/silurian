@@ -9,14 +9,9 @@ var pingTimeoutMs = 2000
 var HelloWorld = {
   pidfile,
   pingTimeoutMs,
-  start: (cfg, callback) => {
-    try {
-      commons.files.dumpPidToFile(pidfile)
-      hellosrv(cfg)
-      callback && callback(0)
-    } catch (e) {
-      callback ? callback(1) : commons.lang.throwError(e)
-    }
+  start: cfg => {
+    commons.files.dumpPidToFile(pidfile)
+    hellosrv(cfg)
   },
   ping: (cfg, cb) => {
     var msg = `${cfg.host}:${cfg.port} is not reachable.`
