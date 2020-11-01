@@ -46,7 +46,7 @@ function ListDirectoryHandler(context, ioaFactory, params) {
   this.handle = () => commons.matcher()
     .on(params.allowDirectoryListing, () => commons.try(() => {
       var dirPath = this.resolvePath(context.getRequestParameters().path)
-      commons.fs.opendir(dirPath, (err, dir) => err ? errorJson('Cannot open dir: ' + dirPath, 3) : listDirectory(dir))
+      commons.fs.opendir(dirPath, (err, dir) => err ? errorJson('Cannot open dir: ' + context.getRequestParameters().path, 3) : listDirectory(dir))
     }, e => errorJson('Server error: ' + e.toString(), 2)))
     .otherwise(() => errorJson('Directory listing is not allowed', 1))
 }
