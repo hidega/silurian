@@ -1,9 +1,9 @@
 'use strict'
 
-var path = require('path')
+var commons = require('./commons')
 
-function Handler(context, ioaFactory, params) {
-  this.baseDir = params.basedir ? path.resolve(params.basedir) : path.resolve(__dirname, '..', 'files')
+function Handler(params) {
+  this.baseDir = params.basedir ? commons.resolvePath(params.basedir) : commons.resolvePath(__dirname, '..', 'files')
 
   this.getFileExtension = filePath => {
     var a = filePath.toString().split('.')
@@ -15,7 +15,7 @@ function Handler(context, ioaFactory, params) {
     p = params.pathTranslator(p).trim().replace(/^\/+/, '')
     var result = this.baseDir
     if (p.length > 0) {
-      result = path.resolve(this.baseDir, p)
+      result = commons.resolvePath(this.baseDir, p)
       result.toString().startsWith(this.baseDir.toString()) || (result = this.baseDir)
     }
     return result

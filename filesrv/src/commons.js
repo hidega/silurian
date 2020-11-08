@@ -1,12 +1,12 @@
 'use strict'
 
-const commons = require('@permian/commons')
+var commons = require('@permian/commons')
 
 module.exports = {
-  fs: commons.files.fsExtra,
-  dumpPidToFile: commons.files.dumpPidToFile,
+  resolvePath: commons.files.resolvePath,
   terminateProcess: commons.proc.terminateProcess,
-  matcher: commons.lang.matcher,
+  when: commons.lang.when,
+  listDir: commons.files.listDir,
   assignRecursive: commons.lang.assignRecursive,
   try: commons.lang.try
 }

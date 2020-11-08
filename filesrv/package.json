@@ -5,8 +5,8 @@
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
-    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.1.0.tgz",
-    "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.0.9.tgz",
+    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.1.1.tgz",
+    "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.1.0.tgz",
     "axios": "^0.19.2"
   },
   "devDependencies": {

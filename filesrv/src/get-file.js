@@ -1,11 +1,17 @@
 'use strict'
 
+var fs = require('fs')
 var commons = require('./commons')
 var mimeTypes = require('./ext-mtype')
 var Handler = require('./handler')
 
-function GetFileHandler(context, ioaFactory, params) {
-  Handler.call(this, context, ioaFactory, params)
+function GetFileHandler(contextFactory, params) {
+  Handler.call(this, params)
+
+  this.getFileExtension = filePath => {
+    var a = filePath.toString().split('.')
+    return a[a.length - 1]
+  }
 
   var error = httpResposeCode => {
     var writer = ioaFactory.createBinaryResponseWriter({
@@ -27,14 +33,14 @@ function GetFileHandler(context, ioaFactory, params) {
       contentType: gzipped ? 'application/gzip' : contentType,
       httpResposeCode: 200
     }, event => event === 'error' && writeError(writer))
-    var readStream = commons.fs.createReadStream(filePath, {}).on('error', () => writeError(writer))
+    var readStream = fs.createReadStream(filePath, {}).on('error', () => writeError(writer))
     readStream.pipe(writer.getOutputStream())
   }
 
   this.handle = () => commons.try(() => {
     var filePath = this.resolvePath(context.getRequestParameters().path || context.getRemainingPath().slice(1).join('/'))
     var contentType = Object.assign(mimeTypes, params.additionalTypeMappings)[this.getFileExtension(filePath)] || 'application/octet-stream'
-    commons.fs.lstat(filePath, (err, stats) => err || !stats.isFile() ? error(404) : streamFile(filePath, contentType))
+    fs.lstat(filePath, (err, stats) => err || !stats.isFile() ? error(404) : streamFile(filePath, contentType))
   }, () => error(500))
 }
 
