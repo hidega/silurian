@@ -2,33 +2,26 @@
 
 var axios = require('axios')
 
-function RestClient(p) {
-  var params = Object.assign({
-    stream: true,
+function RestClient(opts) {
+  var options = Object.assign({
     defaultTimeoutMs: 10000,
     url: 'http://127.0.0.1:5802/file-service'
-  }, p)
+  }, opts)
 
-  this.getFile = (filename, params) => axios({
-    method: 'get',
-    timeout: params.timeoutMs || params.defaultTimeoutMs,
+  var axiosGet = p => axios.get({
+    timeout: p.timeoutMs || options.defaultTimeoutMs,
+    responseType: p.responseType || 'json',
+    url: p.url
+  })
+
+  this.getFile = (filename, p, params = (p || {})) => axiosGet({
     responseType: params.stream ? 'stream' : 'arraybuffer',
-    url: params.url + '/get-file?path=' + filename.replace(/^\/+/, '') + (params.zipped ? '&zipped=1' : '')
+    url: options.url + '/get-file?path=' + filename.replace(/^\/+/, '') + (params.zipped ? '&zipped=1' : '')
   })
 
-  this.listDirectory = (dirname, timeoutMs) => axios({
-    method: 'get',
-    timeout: params.timeoutMs || params.defaultTimeoutMs,
-    responseType: 'json',
-    url: params.url + '/list-directory?path=' + dirname
-  })
+  this.listDirectory = (dirname, timeoutMs) => axiosGet({ url: options.url + '/list-directory?path=' + dirname, timeoutMs })
 
-  this.ping = timeoutMs => axios({
-    method: 'get',
-    timeout: params.timeoutMs || params.defaultTimeoutMs,
-    responseType: 'json',
-    url: params.url + '/ping'
-  })
+  this.ping = timeoutMs => axiosGet({ url: options.url + '/ping', timeoutMs })
 }
 
 module.exports = RestClient

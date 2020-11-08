@@ -1,50 +1,23 @@
 'use strict'
 
+var fs = require('fs')
 var restEndpoint = require('@permian/restendpoint')
 var commons = require('./commons')
 
-/*
-  var listDirectory = dir => {
-    var dirents = []
-    var f = () => dir.read((err, dirent) => {
-      if (err) {
-        errorJson('Read error', 4)
-      } else if (dirent === null) {
-        dir.close()
-        jsonResponseWriter.startArray()
-        dirents.forEach(jsonResponseWriter.flushObject)
-        jsonResponseWriter.close()
-      } else {
-        var type = commons.matcher()
-          .on(dirent.isDirectory(), 'dir')
-          .on(dirent.isSocket(), 'socket')
-          .on(dirent.isSymbolicLink(), 'symlink')
-          .on(dirent.isFile(), 'file')
-          .otherwise('other')
-        dirents.push({ name: dirent.name, type })
-        setImmediate(f)
-      }
-    })
-    f()
-  }*/
-
-var error = (context, msg, code) => context.setStatusCode(code)
-  .setContentType(restEndpoint.http.CONTENTTYPE_JSON)
-  .process(() => ({ error: (msg || '').substr(0, 80) }))
-
-var listDirectory = (context, path) => commons.listDir(path)
-  .then(entries => context.setStatusCode(restEndpoint.http.STATUS_OK)
+var listDirectory = (contextFactory, path) => fs.promises.readdir(path, { withFileTypes: true })
+  .then(entries => contextFactory.emptyToBuffer()
+    .setStatusCode(restEndpoint.http.STATUS_OK)
     .setContentType(restEndpoint.http.CONTENTTYPE_JSON)
     .process(() => entries.map(e => { 
       var type = commons.matcher()
-        .on(dirent.isDirectory(), 'dir') 
-        .on(dirent.isFile(), 'file')
+        .on(e.isDirectory(), 'dir') 
+        .on(e.isFile(), 'file')
         .otherwise('other')
       return { name: e.name, type }
     })
     .filter(e => e.type !== 'other')))
-  .catch(e => error(context, 'Internal error: ' + e, restEndpoint.http.STATUS_ERROR))
+  .catch(e => restEndpoint.tools.responseJsonError.serverError(contextFactory, JSON.stringify(e).substr(0, 80)))
 
-module.exports = (context, path, allowListing) => commons.when(allowListing)
-  .then(() => listDirectory(context, path))
-  .otherwise(() => error(context, 'Directory listing is not allowed', restEndpoint.http.STATUS_FORBIDDEN))
+module.exports = (contextFactory, path, allowListing) => commons.when(allowListing)
+  .then(() => listDirectory(contextFactory, path))
+  .otherwise(() => restEndpoint.tools.responseJsonError.forbidden(contextFactory, 'Directory listing is not allowed'))

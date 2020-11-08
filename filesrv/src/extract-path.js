@@ -4,20 +4,15 @@ var commons = require('./commons')
 
 var defaultPath = commons.resolvePath(__dirname, 'resources')
 
-module.exports = (parameters, basedir, pathTranslator) => {
+module.exports = (parameters, baseDir) => {
   var result = defaultPath
   try {
+    baseDir = baseDir ? commons.resolvePath(baseDir) : defaultPath
     var path = parameters.getRemainingPath().join('/')
-    (!path || path.length=== 0) && (path = parameters.getRequestParameters().path || '/')
-    path = params.pathTranslator(path).replace(/^\/+/, '')
-    
-    baseDir = basedir ? commons.resolvePath(basedir) : defaultPath
-    result = baseDir
-    
-    if (path.length > 0) {
-      result = commons.resolvePath(baseDir, path)
-      result.toString().startsWith(baseDir.toString()) || (result = baseDir)
-    }
-  } catch(e) { console.log(765456, e) }
+    if(!path || path.length === 0) {
+      path = (parameters.getRequestParameters().path || '').replace(/^\/+/, '')
+    } 
+    result = (path.length > 0) ? commons.resolvePath(baseDir, path) : baseDir 
+  } catch(e) { } 
   return result
 }

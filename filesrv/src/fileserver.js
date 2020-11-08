@@ -6,26 +6,24 @@ var handleListDirectory = require('./list-directory')
 var ping = require('./healthcheck')
 var parseParameters = require('./parse-parameters')
 var extractPath = require('./extract-path')
+var mimeTypes = require('./ext-mtype') 
 
-var isZipped = (parameters) => reqParams.zipped && (reqParams.zipped === '1' || reqParams.zipped === 'true' || reqParams.zipped === 'yes')
+var isZipped = parameters => parameters.zipped && (parameters.zipped === '1' || parameters.zipped === 'true' || parameters.zipped === 'yes')
 
-function FileServer() {}
+function FileServer() {}  
 
 FileServer.start = p => {
-  var params = parseParameters(p)
-
-  var handlers = restEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
+  var serviceParams = parseParameters(p)
+  var contentTypes = Object.assign(mimeTypes, serviceParams.additionalTypeMappings)
+  var getPath = pa => extractPath(pa, serviceParams.fileServer.baseDir)
+  var handlers = restEndpoint.prependPathToHandlers(serviceParams.restEndpoint.urlBasePath, {
     GET: {
       'ping': (parameters, contextFactory) => restEndpoint.tools.responseJsonOk(contextFactory),
-      //'get-file': (parameters, contextFactory) => handleGetFile(contextFactory, extractPath(parameters), isZipped(parameters.getRequestParameters())),
-      'list-directory': (parameters, contextFactory) => {
-        var path = extractPath(parameters, params.fileServer.baseDir, params.fileServer.pathTranslator)
-        handleListDirectory(contextFactory.emptyToBuffer(), path, params.fileServer.allowDirectoryListing)
-      }
+      'get-file': (parameters, contextFactory) => handleGetFile(contextFactory, getPath(parameters), isZipped(parameters.getRequestParameters()), contentTypes),
+      'list-directory': (parameters, contextFactory) => handleListDirectory(contextFactory, getPath(parameters), serviceParams.fileServer.allowDirectoryListing)
     }
   })
-
-  return restEndpoint.startInstance(handlers, params.restEndpoint)
+  return restEndpoint.startInstance(handlers, serviceParams.restEndpoint)
 }
 
 FileServer.ping = ping

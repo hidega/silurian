@@ -14,7 +14,6 @@ module.exports = p => commons.assignRecursive({
   },
   fileServer: {
     basedir: false,
-    pathTranslator: p => p,
     additionalTypeMappings: {},
     allowDirectoryListing: true
   }

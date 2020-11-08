@@ -1,9 +1,10 @@
 'use strict'
 
 // http://localhost:5802/web/file-service/list-directory?path=c/c1
-// 
+// http://localhost:5802/web/file-service/list-directory/c/c1
 
-var FileServer = require('../src')
+var path = require('path')
+var filesrv = require('../src')
 
 var cfg = {
   restEndpoint: {
@@ -11,10 +12,11 @@ var cfg = {
     logToStdout: true
   },
   fileServer: {
-    basedir: '/tmp'
+    allowDirectoryListing: true,
+    baseDir: path.resolve(__dirname, '../files')
   }
 }
 
-FileServer.start(cfg)
+filesrv.FileServer.start(cfg)
 
-setInterval(() => FileServer.healthcheck(cfg, err => console.log('ping ' + (err ? 'ERROR: ' + err : 'OK'))), 5000)
+//setInterval(() => FileServer.healthcheck(cfg, err => console.log('ping ' + (err ? 'ERROR: ' + err : 'OK'))), 5000)

@@ -4,7 +4,6 @@ var parseParameters = require('./parse-parameters')
 var RestClient = require('./rest-client')
 
 module.exports = (p, callback) => {
-  callback || (callback = () => {})
   var pingTimeoutMs = 10000
   var { host, port, urlBasePath } = parseParameters(p).restEndpoint
   var client = new RestClient({ url: 'http://' + host + ':' + port + '/' + urlBasePath })
