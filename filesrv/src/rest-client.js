@@ -8,7 +8,8 @@ function RestClient(opts) {
     url: 'http://127.0.0.1:5802/file-service'
   }, opts)
 
-  var axiosGet = p => axios.get({
+  var axiosGet = p => axios({
+    method: 'get',
     timeout: p.timeoutMs || options.defaultTimeoutMs,
     responseType: p.responseType || 'json',
     url: p.url

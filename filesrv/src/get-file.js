@@ -14,8 +14,9 @@ var streamFile = (contextFactory, path, contentType, isZipped) => contextFactory
       zstream.pipe(outstream)
       outstream = zstream
     }
-    var readStream = fs.createReadStream(path, {}).on('error', () => outstream.end('-------FILE_READ_ERROR-------'))
-    readStream.pipe(outstream)
+   fs.createReadStream(path)
+      .on('error', () => outstream.end('-------FILE_READ_ERROR-------')) 
+      .pipe(outstream)
   })
 
 var getFileExtension = filePath => {
