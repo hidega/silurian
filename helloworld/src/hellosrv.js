@@ -14,8 +14,7 @@ module.exports = cfg => {
 
   var server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/xml' })
-    res.write(message())
-    res.end()
+    res.end(message())
   })
   cfg.socket ? server.listen(cfg.socket) : server.listen(cfg.port, cfg.host)
   return () => {

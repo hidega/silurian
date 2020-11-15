@@ -14,8 +14,8 @@ var streamFile = (contextFactory, path, contentType, isZipped) => contextFactory
       zstream.pipe(outstream)
       outstream = zstream
     }
-   fs.createReadStream(path)
-      .on('error', () => outstream.end('-------FILE_READ_ERROR-------')) 
+    fs.createReadStream(path)
+      .on('error', () => outstream.end('-------FILE_READ_ERROR-------'))
       .pipe(outstream)
   })
 
@@ -31,6 +31,3 @@ var getContentType = (path, types, isZipped) => commons.when(isZipped)
 module.exports = (contextFactory, path, isZipped, types) => fs.promises.lstat(path)
   .then(stats => stats.isFile() ? streamFile(contextFactory, path, getContentType(path, types, isZipped), isZipped) : Promise.reject())
   .catch(e => restEndpoint.tools.responseJsonError.notFound(contextFactory, JSON.stringify(e).substr(0, 80)))
-
-
-

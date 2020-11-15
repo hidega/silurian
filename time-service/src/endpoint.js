@@ -2,8 +2,11 @@
 
 var restEndpoint = require('@permian/restendpoint')
 var TimeMonitor = require('./time-monitor')
+var ping = require('ping')
 
-function Endpoint(p) {}
+function Endpoint() {}
+
+Endpoint.ping = ping
 
 Endpoint.start = p => {
   var params = p || {}
@@ -15,7 +18,7 @@ Endpoint.start = p => {
     maxConnections: 32,
     port: 25364,
     host: '127.0.0.1',
-    requestTimeout: 5 * 1000,
+    requestTimeoutMs: 5 * 1000,
     logToStdout: false
   }, p.restEndpoint)
 
@@ -23,8 +26,9 @@ Endpoint.start = p => {
 
   var handlers = restEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
     GET: {
-      'seqnr': (context, ioaFactory) => restEndpoint.tools.SimpleJsonWriter.flushResult(ioaFactory, { uid: timeMonitor.uid(), seq: timeMonitor.seq() }),
-      'gettime': (context, ioaFactory) => restEndpoint.tools.SimpleJsonWriter.flushResult(ioaFactory, timeMonitor.now())
+      'ping': (parameters, contextFactory) => restEndpoint.tools.responseJsonOk(contextFactory),
+      'seqnr': (parameters, contextFactory) => restEndpoint.tools.responseJsonObject(contextFactory, restEndpoint.tools.STATUS_OK, { uid: timeMonitor.uid(), seq: timeMonitor.seq() }),
+      'gettime': (parameters, contextFactory) => restEndpoint.tools.responseJsonObject(contextFactory, restEndpoint.tools.STATUS_OK, timeMonitor.now())
     }
   })
 
@@ -36,4 +40,4 @@ Endpoint.start = p => {
   }
 }
 
-module.exports = Endpoint
+module.exports = Object.freeze(Endpoint)

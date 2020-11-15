@@ -9,6 +9,7 @@ function TimeMonitor(params) {
       { host: 'a.time.steadfast.net', port: 123 }
     ],
     pollIntervalMins: 10,
+    acceptedDeviationSec: 5,
     tryServerTimes: 2
   }, params)
 
@@ -22,8 +23,11 @@ function TimeMonitor(params) {
     universalEpochTime = false
     var f = i => {
       workers[i % workers.length]().then(data => {
-        universalEpochTime = parseInt(data.receiveTimestamp)
-        lastRefreshedTime = Date.now()
+        var ts = parseInt(data.receiveTimestamp)
+        if(Math.abs(ts-this.now())/1000>parameters.acceptedDeviationSec) {
+          universalEpochTime = ts
+          lastRefreshedTime = Date.now()
+        }
       }).catch(() => i > 0 && f(--i))
     }
     f(parameters.tryServerTimes * workers.length)
@@ -33,13 +37,6 @@ function TimeMonitor(params) {
 
   var interval = setInterval(refreshTime, 60 * 1000 * parameters.pollIntervalMins)
 
-  this.dispose = () => {
-    workers.length = 0
-    clearInterval(interval)
-    this.now = () => {}
-    this.dispose = () => {}
-  }
-
   this.now = () => universalEpochTime ? universalEpochTime + Date.now() - lastRefreshedTime : -1
 
   this.seq = () => {
@@ -48,6 +45,14 @@ function TimeMonitor(params) {
   }
 
   this.uid = () => uid.toString()
+
+  this.dispose = () => {
+    workers = false
+    clearInterval(interval)
+    this.now = () => {}
+    this.uid = () => {}
+    this.dispose = () => {}
+  }
 }
 
 module.exports = TimeMonitor

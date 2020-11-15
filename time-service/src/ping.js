@@ -4,4 +4,7 @@ var RestClient = require('./rest-client')
 
 module.exports = (cfg, callback) => RestClient.newInstance({
   url: `http://${cfg.restEndpoint.host}:${cfg.restEndpoint.port}/${cfg.restEndpoint.urlBasePath}`
-}).then(() => callback()).catch(() => callback(1))
+})
+.getTime()
+.then(() => callback())
+.catch(e => callback(e || 1))

@@ -6,11 +6,11 @@ var handleListDirectory = require('./list-directory')
 var ping = require('./healthcheck')
 var parseParameters = require('./parse-parameters')
 var extractPath = require('./extract-path')
-var mimeTypes = require('./ext-mtype') 
+var mimeTypes = require('./ext-mtype')
 
 var isZipped = parameters => parameters.zipped && (parameters.zipped === '1' || parameters.zipped === 'true' || parameters.zipped === 'yes')
 
-function FileServer() {}  
+function FileServer() {}
 
 FileServer.start = p => {
   var serviceParams = parseParameters(p)

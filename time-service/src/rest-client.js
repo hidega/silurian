@@ -24,7 +24,12 @@ function RestClient(p) {
 
   this.getSequenceNr = () => axios({ method: 'get', url: params.url + '/seqnr' })
 
-  this.dispose = () => clearInterval(refreshInterval)
+  this.dispose = () => {
+    clearInterval(refreshInterval)
+    this.getStoredTime = () => -1
+    this.getSequenceNr = () => -1
+    this.getTime = () => -1
+  }
 }
 
 RestClient.newInstance = p => new RestClient(p)  

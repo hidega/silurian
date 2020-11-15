@@ -9,10 +9,10 @@ module.exports = (parameters, baseDir) => {
   try {
     baseDir = baseDir ? commons.resolvePath(baseDir) : defaultPath
     var path = parameters.getRemainingPath().join('/')
-    if(!path || path.length === 0) {
+    if (!path || path.length === 0) {
       path = (parameters.getRequestParameters().path || '').replace(/^\/+/, '')
-    } 
-    result = (path.length > 0) ? commons.resolvePath(baseDir, path) : baseDir 
-  } catch(e) { } 
+    }
+    result = (path.length > 0) ? commons.resolvePath(baseDir, path) : baseDir
+  } catch (e) {}
   return result
 }
