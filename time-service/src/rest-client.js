@@ -1,6 +1,6 @@
 'use strict'
 
-var axios = require('axios')
+var restclient = require('@permian/restclient')
 
 function RestClient(p) {
   var params = Object.assign({
@@ -18,11 +18,11 @@ function RestClient(p) {
     lastRefreshedTime = Date.now()
   }).catch(e => storedTime = -1), params.refreshFrequencySec * 1000)
 
-  this.getTime = () => axios({ method: 'get', url: params.url + '/gettime' })
+  this.getTime = () => restclient({ method: 'get', url: params.url + '/gettime' })
 
   this.getStoredTime = () => storedTime === -1 ? -1 : storedTime + Date.now() - lastRefreshedTime
 
-  this.getSequenceNr = () => axios({ method: 'get', url: params.url + '/seqnr' })
+  this.getSequenceNr = () => restclient({ method: 'get', url: params.url + '/seqnr' })
 
   this.dispose = () => {
     clearInterval(refreshInterval)
@@ -32,6 +32,6 @@ function RestClient(p) {
   }
 }
 
-RestClient.newInstance = p => new RestClient(p)  
+RestClient.newInstance = p => new RestClient(p)
 
 module.exports = RestClient

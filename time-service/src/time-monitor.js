@@ -9,7 +9,7 @@ function TimeMonitor(params) {
       { host: 'a.time.steadfast.net', port: 123 }
     ],
     pollIntervalMins: 10,
-    acceptedDeviationSec: 5,
+    acceptedDeviationSec: -1,
     tryServerTimes: 2
   }, params)
 
@@ -24,7 +24,7 @@ function TimeMonitor(params) {
     var f = i => {
       workers[i % workers.length]().then(data => {
         var ts = parseInt(data.receiveTimestamp)
-        if(Math.abs(ts-this.now())/1000>parameters.acceptedDeviationSec) {
+        if (parameters.acceptedDeviationSec < 1 || (Math.abs(ts - this.now()) / 1000 > parameters.acceptedDeviationSec)) {
           universalEpochTime = ts
           lastRefreshedTime = Date.now()
         }
