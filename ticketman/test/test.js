@@ -1,42 +1,43 @@
 'use strict'
 
-const assert = require('assert')
-const commons = require('@permian/commons')
-const ticketman = require('../src')
-const BaseTicketManager = require('../src/basetm')
-const SimpleTicketManager = require('../src/simple')
+var assert = require('assert')
+var ticketman = require('../src')
+var BaseTicketManager = require('../src/basetm')
+var SimpleTicketManager = require('../src/simple')
 
-const checkError = err => err && (console.log(err) || assert.fail())
+var checkError = err => err && (console.log(err) || assert.fail())
 
-const caseBaseTm = () => {
-  const basetm = new BaseTicketManager()
+var caseBaseTm = () => {
+  var basetm = new BaseTicketManager()
   
-  for(let i=0; i<20; i++) {
-    const salt = basetm.generateSalt()
+  for(var i=0; i<20; i++) {
+    var salt = basetm.generateSalt()
     assert(typeof salt === 'string' && /[0-9]{4,12}/.test(salt))
   }
   
-  const data = 'Furulya'  
-  const encodedData = basetm.encode(Buffer.from(data))
-  const decodedData = basetm.decode(encodedData)
-  assert(data===decodedData.toString())
+  var data = 'Furulya'  
+  var encodedData = basetm.encode(Buffer.from(data))
+  var decodedData = basetm.decode(encodedData)
+  assert.equal(data, decodedData.toString())
 
   basetm.encode(Buffer.from(data))
   basetm.encode(Buffer.from(data))
   basetm.encode(Buffer.from(data))
+
+  return Promise.resolve()
 }
 
-const caseSimple = () => {
-  const stm = new SimpleTicketManager()
+var caseSimple = () => {
+  var stm = new SimpleTicketManager()
   
-  const userId = 'JohnDoe'  
-  const appContext = 'app123'
-  const expiresEpoch = 123456789
+  var userId = 'JohnDoe'  
+  var appContext = 'app123'
+  var expiresEpoch = 123456789
   
-  let ticket1 = false
-  let ticket2 = false
+  var ticket1 = false
+  var ticket2 = false
 
-  stm.obtainTicket(userId, appContext, expiresEpoch)
+  return stm.obtainTicket(userId, appContext, expiresEpoch)
   .then(ticket => {
     ticket1 = ticket
     return stm.decodeTicket(ticket)
@@ -52,35 +53,4 @@ const caseSimple = () => {
   .catch(checkError) 
 }
 
-/*const caseReferential = () => {
-  let ticket
-  const ENCODED_ID = Buffer.from('ENCODED_ID')
-  
-  const reftm = ticketman.TicketManagerFactory.createInstance('referential', {}, {
-    get: (id, callback) => callback(false, ticket),
-    upsert: (userId, appContext, expiresEpoch, callback) => {
-      ticket = { userId, appContext, expiresEpoch }
-      callback(false, ENCODED_ID)
-    }
-  })
-  
-  const userId = 'JohnDoe'
-  const appContext = 'app123'
-  const expiresEpoch = 123456789
-    
-  reftm.obtainTicket(userId, appContext, expiresEpoch, (err, ticket) => {
-    checkError(err)
-    reftm.decodeTicket(ticket, (err, userData) => {
-      checkError(err)
-      assert(userData.userId===userId && userData.appContext===appContext && userData.expiresEpoch===expiresEpoch)
-    })
-  })
-}*/
-
-caseBaseTm()
-
-caseSimple()
-
-//caseReferential()
-
-console.log('Test are OK')
+caseBaseTm().then(() => caseSimple()).then(() => console.log('Test are OK'))

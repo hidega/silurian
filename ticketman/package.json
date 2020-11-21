@@ -1,23 +1,24 @@
 {
   "name": "@silurian/ticketman",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ticket management",
   "private": true,
   "license": "Apache-2.0",
   "devDependencies": {
-    "@permian/build-tasks": "https://people.inf.elte.hu/hiaiaat/npm/permian-build-tasks-1.0.6.tgz"
+    "@silurian/build-tasks": "../build-tasks"
   },
   "scripts": {
-    "tr": "node ./node_modules/@permian/build-tasks"
+    "tr": "node ./node_modules/@silurian/build-tasks"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.0.19.tgz",
-    "@permian/pki": "https://people.inf.elte.hu/hiaiaat/npm/permian-pki-1.0.1.tgz",
-    "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.0.9.tgz"
+    "@permian/commons": "https://people.inf.elte.hu/hiaiaat/npm/permian-commons-1.1.1.tgz",
+    "@permian/restclient": "https://people.inf.elte.hu/hiaiaat/npm/permian-restclient-1.0.1.tgz",
+    "@permian/pki": "https://people.inf.elte.hu/hiaiaat/npm/permian-pki-1.0.2.tgz",
+    "@permian/restendpoint": "https://people.inf.elte.hu/hiaiaat/npm/permian-restendpoint-1.1.0.tgz"
   },
   "files": [
     "index.js",
+    "js-doc.html",
     "dirsum.txt",
     "lib/**"
   ]

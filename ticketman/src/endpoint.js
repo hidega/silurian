@@ -1,41 +1,32 @@
 'use strict'
 
-const RestEndpoint = require('@permian/restendpoint')
-const { assignRecursive } = require('@permian/commons').lang
-const SimpleTicketManager = require('./simple')
+var RestEndpoint = require('@permian/restendpoint')
+var parseParams = require('./parse-params')
+var SimpleTicketManager = require('./simple')
+
+var responseOk = (contextFactory, obj) => RestEndpoint.tools.responseJsonObject(contextFactory, RestEndpoint.tools.STATUS_OK, obj)
 
 function Endpoint(p) {}
 
 Endpoint.start = p => {
-  const params = assignRecursive({
-    restEndpoint: {
-      urlBasePath: 'ticketman',
-      maxConnections: 32,
-      port: 11290,
-      host: '127.0.0.1',
-      requestTimeout: 5 * 1000,
-      logToStdout: false
-    },
-    ticketManager: {
-      instance: false
-    }
-  }, p)
+  var params = parseParams(p)
 
   params.ticketManager.instance || (params.ticketManager.instance = new SimpleTicketManager(params.ticketManager))
 
-  const handlers = RestEndpoint.prependPathToHandlers(params.restEndpoint.urlBasePath, {
+  var handlers = RestEndpoint.prependPathToHandlers(params.ticketManager.urlBasePath, {
     GET: {
-      'obtain-ticket': (context, ioaFactory) => RestEndpoint.tools.handleSafe(context, ioaFactory, writer => {
-        const reqParams = context.getRequestParameters()
-        params.ticketManager.instance.obtainTicket(reqParams.userid, reqParams.appctx, reqParams.expires)
-          .then(result => writer.flushResult(Buffer.from(result).toString('hex')))
-          .catch(() => writer.flushError(-101))
-      }),
-      'decode-ticket': (context, ioaFactory) => RestEndpoint.tools.handleSafe(context, ioaFactory, writer => {
-        const ticket = context.getRequestParameters().ticket
-        const buf = Buffer.from(ticket, 'hex')
-        params.ticketManager.instance.decodeTicket(buf).then(writer.flushResult).catch(() => writer.flushError(-102))
-      })
+      'obtain-ticket': (parameters, contextFactory) => {
+        var {userid, appctx, expires} = parameters.getRequestParameters()
+        return params.ticketManager.instance.obtainTicket(userid, appctx, expires)
+          .then(result => responseOk(contextFactory, { result: Buffer.from(result).toString('hex') }))
+          .catch(() => RestEndpoint.tools.responseJsonNotOk(contextFactory))
+      },
+      'decode-ticket': (parameters, contextFactory) => {
+        var buf = Buffer.from(parameters.getRequestParameters().ticket, 'hex')
+        return params.ticketManager.instance.decodeTicket(buf)
+          .then(ticket => responseOk(contextFactory, ticket))
+          .catch(() => RestEndpoint.tools.responseJsonNotOk(contextFactory))
+      }
     }
   })
 

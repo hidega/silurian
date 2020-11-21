@@ -1,25 +1,18 @@
 'use strict'
 
-const axios = require('axios')
+var restclient = require('@permian/restclient')
 
 function RestClient(p) {
-  const self = this
-
-  const params = Object.assign({
+  var params = Object.assign({
+    timeoutMs: 10000,
     url: 'http://127.0.0.1:11290/ticketman'
   }, p)
 
-  self.obtainTicket = (userid, appctx, expires) => axios({
-    method: 'get',
-    responseType: 'json',
-    url: `${params.url}/obtain-ticket?userid=${userid}&appctx=${appctx}&expires=${expires}`
-  })
+  var httpGet = url => restclient({ method: 'get', responseType: 'json', url })
 
-  self.decodeTicket = ticket => axios({
-    method: 'get',
-    responseType: 'json',
-    url: params.url + '/decode-ticket?ticket=' + ticket
-  })
+  this.obtainTicket = (userid, appctx, expires) => httpGet(`${params.url}/obtain-ticket?userid=${userid}&appctx=${appctx}&expires=${expires}`)
+
+  this.decodeTicket = ticket => httpGet(params.url + '/decode-ticket?ticket=' + ticket)
 }
 
 module.exports = RestClient

@@ -1,11 +1,15 @@
 'use strict'
 
-const pki = require('@permian/pki')
+var pki = require('@permian/pki')
+
+var throwIf = (c, msg) => {
+  if(c) {
+    throw new Error(msg)
+  }
+}
 
 function BaseTicketManager(p) {
-  const self = this
-
-  self.params = Object.assign({
+  this.params = Object.assign({
     separator: '!',
     saltLengthMin: 4,
     saltLengthMax: 12,
@@ -13,26 +17,24 @@ function BaseTicketManager(p) {
     cryptoServicesCfg: {}
   }, p)
 
-  if (self.params.cryptoServicesInstance && self.params.cryptoServicesCfg) {
-    throw new Error('Bad config options')
-  }
+  throwIf(this.params.cryptoServicesInstance && this.params.cryptoServicesCfg, 'Bad config options')
 
-  const cryptoServices = self.params.cryptoServicesInstance || new pki.CryptoServices(self.params.cryptoServicesCfg)
+  var cryptoServices = this.params.cryptoServicesInstance || new pki.CryptoServices(this.params.cryptoServicesCfg)
 
-  self.encode = cryptoServices.encodeSync
+  this.reject = (e, callback) => callback ? callback(e) && false : Promise.reject(e)
 
-  self.decode = cryptoServices.decodeSync
+  this.resolve = (o, callback) => callback ? callback(false, o) && false : Promise.resolve(o) 
 
-  self.generateSalt = () => new Array(self.params.saltLengthMin + parseInt(Math.random(self.params.saltLengthMax - self.params.saltLengthMin)))
+  this.encode = cryptoServices.encodeSync
+
+  this.decode = cryptoServices.decodeSync
+
+  this.generateSalt = () => new Array(this.params.saltLengthMin + parseInt(Math.random(this.params.saltLengthMax - this.params.saltLengthMin)))
     .fill('').map(() => parseInt(Math.random() * 10)).join('')
 
-  self.checkObtainParameters = (userId, appContext, expiresEpoch) => {
-    if (!userId || !appContext || !expiresEpoch) {
-      throw new Error('Missing parameter(s)')
-    }
-    if (userId.includes(self.params.separator) || appContext.includes(self.params.separator) || isNaN(expiresEpoch)) {
-      throw new Error(`Invalid date or separator (${self.params.separator})`)
-    }
+  this.checkObtainParameters = (userId, appContext, expiresEpoch) => {
+    throwIf(!userId || !appContext || !expiresEpoch, 'Missing parameter(s)')
+    throwIf(userId.includes(this.params.separator) || appContext.includes(this.params.separator) || isNaN(expiresEpoch), `Invalid date or separator (${this.params.separator})`)
   }
 }
 
