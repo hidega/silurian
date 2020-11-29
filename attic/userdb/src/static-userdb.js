@@ -1,31 +1,18 @@
 'use strict'
- 
-const {lang} = require('@permian/commons')
-const startRestendpoint = require('./restendpoint')
- 
-function StaticUserDatabase(dbFile) {
-  const self = this
-  
-  const userDatabase = require(dbFile)
-  
-  self.findLike = (userNameMatcher, onData, onEnd) => {
-    const matcher = new RegExp(userNameMatcher)
-    onData(userDatabase.reduce((acc, entry) => matcher.test(entry.name) ? acc.concat(entry) : acc,  []))
-    onEnd && onEnd()
+
+function StaticUserDatabase(userDatabase) { 
+  this.findLike = userNameMatcher => {
+    var matcher = new RegExp(userNameMatcher || /.*/)
+    return userDatabase.reduce((acc, entry) => matcher.test(entry.name) ? acc.concat(entry) : acc,  [])
   }
  
-  self.find = (userNames, onData, onEnd) => {
-    lang.isString(userNames) && (userNames = [userNames])
-    onData(userDatabase.reduce((acc, entry) => userNames.includes(entry.name) ? acc.concat(entry) : acc,  []))
-    onEnd && onEnd()
+  this.find = userNames => {
+    userNames || (userNames = [])
+    Array.isArray(userNames) || (userNames = [userNames.toString()])
+    return userDatabase.reduce((acc, entry) => userNames.includes(entry.name) ? acc.concat(entry) : acc,  [])
   }
     
-  self.findGroup = (groupName, onData, onEnd) => {
-    onData(userDatabase.reduce((acc, entry) => entry.groups.includes(groupName) ? acc.concat(entry) : acc,  []))
-    onEnd && onEnd()
-  }
+  this.findGroup = groupName => userDatabase.reduce((acc, entry) => entry.groups.includes(groupName) ? acc.concat(entry) : acc,  [])
 }
-
-StaticUserDatabase.startService = p => startRestendpoint(p.restEndpoint, new StaticUserDatabase(p.dbFile))
 
 module.exports = StaticUserDatabase

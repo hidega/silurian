@@ -1,10 +1,10 @@
 'use strict'
 
-const assert = require('assert')
-const userdb = require('../src')
+var assert = require('assert')
+var userdb = require('../src')
 
-const caseStatic = () => {
-  const db = new userdb.StaticUserdatabase('../test/users')
+var caseStatic = () => {
+  var db = new userdb.StaticUserdatabase('../test/users')
   
   db.find(['user_a', 'user_b', 'user_y'], data => { 
     assert(data.length===2)
@@ -27,7 +27,7 @@ const caseStatic = () => {
   })  
 }
 
-const caseStaticRest = () => {
+var caseStaticRest = () => {
   userdb.StaticUserdatabase.startService({
     dbFile: '../test/users',
     restEndpoint: {
@@ -36,11 +36,11 @@ const caseStaticRest = () => {
   })
 }
 
-const caseSimple = () => {
+var caseSimple = () => {
   
 }
 
-//caseStatic()
+caseStatic()
 caseStaticRest()
 
 console.log('Tests are OK')

@@ -1,3 +1,8 @@
+2020-11-24  hidega  hidega@caesar.elte.hu
+
+* The code is updated, only static database remains. 
+
+
 2019-12-18  hidega  hidega@caesar.elte.hu
 
 * Static (file based) user database is implemented. 

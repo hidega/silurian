@@ -1,31 +1,39 @@
 'use strict'
  
-const restendpoint = require('@permian/restendpoint')
- 
-module.exports = (p, userDb) => {
-  const params = Object.assign({
-    urlBasePath: 'userdb-static',
-    maxConnections: 32,
-    port: 30269,
-    host: '127.0.0.1',
-    requestTimeout: 2000,
-    logToStdout: false
-  }, p)
-  
-  const handleSafe = restendpoint.tools.handleSafe
-  const getRequestParameter = restendpoint.tools.getRequestParameter
-  
-  const handlers = restendpoint.prependPathToHandlers(params.urlBasePath, {
+var RestEndpoint = require('@permian/restendpoint')
+var parseParams = require('./parse-params') 
+var StaticUserDatabase = require('./static-userdb')
+
+function RestEndpoint() {}
+
+RestEndpoint.USER_DELIMITER = ','
+
+var flushResult = (contextFactory, result) => RestEndpoint.tools.responseJsonObject(contextFactory, RestEndpoint.tools.STATUS_OK, result)
+
+RestEndpoint.start = (params, userDb) => {
+  params = parseParams(params)
+
+  var database = new StaticUserDatabase(params.userdb.database || {})
+    
+  var handlers = RestEndpoint.prependPathToHandlers(params.userdb.urlBasePath, {
     GET: {
-      'find': (context, ioaFactory) => userDb.find(getRequestParameter(context, 'usernames').split('~'), 
-                                                   data => handleSafe(context, ioaFactory, writer => writer.flushObjectArray(data))),
-      'find-like': (context, ioaFactory) => userDb.findLike(getRequestParameter(context, 'username-matcher'), 
-                                                            data => handleSafe(context, ioaFactory, writer => writer.flushObjectArray(data))),
-      'find-group': (context, ioaFactory) => userDb.findGroup(getRequestParameter(context, 'groupname'), 
-                                                              data => handleSafe(context, ioaFactory, writer => writer.flushObjectArray(data)))
+      'ping': (parameters, contextFactory) => RestEndpoint.tools.responseJsonOk(contextFactory),
+      'find': (parameters, contextFactory) => {
+        var result = { furulya: 1 }
+        return flushResult(contextFactory, result)
+      },
+      'find-like': (parameters, contextFactory) => {
+        var result = { furulya: 1 }
+        return flushResult(contextFactory, result)
+      },
+      'find-group': (parameters, contextFactory) => {
+        var result = database.findGroup(parameters.getRequestParameters().group)
+        return flushResult(contextFactory, result)
+      }
     }
   })
   
-  return restendpoint.startInstance(handlers, params)
+  return RestEndpoint.startInstance(handlers, params.restEndpoint)
 }
  
+module.exports = Object.freeze(RestEndpoint)
