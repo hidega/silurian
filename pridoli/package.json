@@ -1,0 +1,12 @@
+{
+  "name": "@silurian/pridoli",
+  "version": "1.0.1",
+  "description": "Log, KVPS, messagebus, lock and user management services",
+  "private": true,
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "files": [
+    "index.js",
+    "src/**"
+  ]
+}
