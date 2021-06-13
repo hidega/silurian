@@ -12,4 +12,4 @@ var parseDefaults = d => {
   return defaults + '\n'
 }
 
-module.exports = d => commons.readSqlFiles(__dirname).then(s => parseDefaults(d) + s) 
+module.exports = d => commons.readSqlFiles('log').then(s => parseDefaults(d) + s) 

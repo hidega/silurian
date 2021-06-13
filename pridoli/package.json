@@ -4,9 +4,15 @@
   "description": "Log, KVPS, messagebus, lock and user management services",
   "private": true,
   "license": "Apache-2.0",
-  "dependencies": {},
+  "scripts": {
+    "tr": "node ./node_modules/@silurian/build-tasks"
+  },
+  "devDependencies": {
+    "@silurian/build-tasks": "../build-tasks"
+  },
   "files": [
     "index.js",
-    "src/**"
+    "src/**",
+    "sql/**"
   ]
 }

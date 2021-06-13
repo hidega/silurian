@@ -9,7 +9,7 @@ var filterFiles = files => files.filter(f => f.endsWith(SQL_EXT) && f !== DDL_SQ
 
 var fileReadPromise = file => fsPromises.readFile(file).then(b => b.toString()).catch(() => '')
 
-var readSqlFiles = dir => fsPromises.readdir(path.resolve(dir))
+var readSqlFiles = dir => fsPromises.readdir(path.resolve(__dirname, '..', '..', 'sql', dir))
   .then(files => [DEFAULTS_SQL, DDL_SQL].concat(filterFiles(files)).map(f => dir + path.sep + f))
   .then(files => Promise.all(files.map(fileReadPromise)))
   .then(data => data.join('\n')) 
