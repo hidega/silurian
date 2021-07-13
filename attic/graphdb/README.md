@@ -1,3 +1,0 @@
-## GraphDb
-
-Graph database

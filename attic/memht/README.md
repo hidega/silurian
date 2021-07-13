@@ -1,3 +1,0 @@
-## memht
-
-memht REST endpoint

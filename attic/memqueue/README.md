@@ -1,3 +1,0 @@
-## memhqueue
-
-memqueue REST endpoint

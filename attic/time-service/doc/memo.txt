@@ -1,4 +1,0 @@
-
-Server list:
-
-https://support.ntp.org/bin/view/Servers/StratumTwoTimeServers

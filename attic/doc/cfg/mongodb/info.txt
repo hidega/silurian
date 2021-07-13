@@ -1,3 +1,0 @@
-MONGODB
-mwuser pwd: jhIj458jFndsj
-admint pwd: Qiwm8Cncj5bn
