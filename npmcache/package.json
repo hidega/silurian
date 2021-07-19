@@ -1,0 +1,11 @@
+{
+  "name": "@silurian/npmcache",
+  "version": "1.1.1",
+  "description": "npm cache",
+  "private": true,
+  "license": "Apache-2.0",
+  "files": [
+    "index.js",
+    "src/**"
+  ]
+}
